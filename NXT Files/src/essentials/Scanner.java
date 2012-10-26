@@ -18,6 +18,16 @@ public class Scanner {
 		m.setSpeed(200);
 	}
 	
+	
+	/**
+	 * Scans for beacons between a specified start angle and end angle, and then
+	 * backwards again. It looks only at light values above 42, which seems to be
+	 * a good threshold to use, and stores the peaks found in the scanner's bearings
+	 * instance variable.
+	 * 
+	 * @param startAngle angle to start the scan at, in degrees from forward
+	 * @param endAngle   angle to end 1 scan at, in degrees from forward.
+	 */
 	public void lightScan(int startAngle, int endAngle) {
 		int threshold = 42;
 		
@@ -81,6 +91,13 @@ public class Scanner {
 		calculateBearingsFromLightValues(ccwBearings, cwBearings);
 	}
 	
+	/**
+	 * Takes both sets of bearings found from the clockwise scan and the counterclockwise
+	 * scans, then combines them to create a set of true bearings to the beacons.
+	 * 
+	 * @param ccwBearings the bearings gotten from the counterclockwise scan
+	 * @param cwBearings  the bearings gotten from the clockwise scan
+	 */
 	public void calculateBearingsFromLightValues(int[] ccwBearings, int[] cwBearings) {
 		/*
 		if (ccwBearings[1] == 0) {
@@ -113,6 +130,10 @@ public class Scanner {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return the relative bearings to the light beacons stored in scanner
+	 */
 	public int[] getBearings() {
 		return bearings;
 	}
