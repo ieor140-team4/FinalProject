@@ -50,18 +50,18 @@ class Locator
 		float y0 = y;
 		float y1 = beaconY - y;
 		
-		double c = Math.toRadians((bearings[1] - bearings[0]));
+		double c = Math.toRadians((bearings[0] - bearings[1]));
 
 		float x = 0;
 		
 		if (Math.abs( Math.abs(c) - 180) <= 2) {
 			x = (float) (beaconY * Math.tan((Math.PI / 2) - (c/2)) / 2);
 		} else if (c > 0) {
-			x = (float) (0.5 * ( ((y0 + y1) / Math.tan(c)) + 
-					Math.sqrt( Math.pow(((y0 + y1) / Math.tan(c)), 2) + (4*y0*y1)) ) );
+			x = (float) (0.5 * ( ((y0 + y1) / Math.tan(c)) -
+					Math.sqrt( Math.pow(((y0 + y1) / Math.tan(c)), 2) + (4*y0*y1)) ));
 		} else if (c <= 0) {
-			x = (float) (0.5 * ( ((y0 + y1) / Math.tan(c)) - 
-					Math.sqrt( Math.pow(((y0 + y1) / Math.tan(c)), 2) + (4*y0*y1)) ) );
+			x = (float) (0.5 * ( ((y0 + y1) / Math.tan(c)) +
+					Math.sqrt( Math.pow(((y0 + y1) / Math.tan(c)), 2) + (4*y0*y1)) ));
 		}
 		
 		float heading = 0;
