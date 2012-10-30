@@ -40,52 +40,43 @@ public class Scanner {
 		int highestLightValue = 0;
 		int ccwIndex = 0;
 		int cwIndex = 0;
+		boolean ccw = false;
 		boolean ccwAssigned = false;
 		boolean cwAssigned = false;
 		
-		motor.rotateTo(endAngle, true);
+		int[] startAngles = {startAngle, endAngle};
+		int[] endAngles = {endAngle, startAngle};
 		
-		while (motor.isMoving()) {
-			int newAngle = motor.getTachoCount();
+		for (int i = 0; i < 2; i++) {
+			ccw = (endAngles[i] > startAngles[i]);
 			
-			if (newAngle != oldAngle) {
-				oldAngle = newAngle;
+			motor.rotateTo(endAngles[i], true);
+			
+			while (motor.isMoving()) {
+				int newAngle = motor.getTachoCount();
+				
 				int lv = sensor.getLightValue();
 				
 				if ((lv > threshold) && (lv > highestLightValue)) {
 					highestLightValue = lv;
-					ccwBearings[ccwIndex] = newAngle;
-					ccwAssigned = true;
-				} else if ((lv < threshold) && (ccwAssigned) && (ccwIndex == 0)) {
-					System.out.println("First peak found. Moving on.");
+					if (ccw) {
+						ccwBearings[ccwIndex] = newAngle;
+						ccwAssigned = true;
+					} else if (!ccw) {
+						cwBearings[cwIndex] = newAngle;
+						cwAssigned = true;
+					}
+				} else if ((lv < threshold) && (ccw && ccwAssigned && ccwIndex == 0)) {
 					ccwIndex++;
 					highestLightValue = 0;
-				}
-			}
-		}
-		
-		highestLightValue = 0;
-		motor.rotateTo(startAngle, true);
-		
-		while (motor.isMoving()) {
-
-			int newAngle = motor.getTachoCount();
-			
-			if (newAngle != oldAngle) {
-				oldAngle = newAngle;
-				int lv = sensor.getLightValue();
-				
-				if ((lv > threshold) && (lv > highestLightValue)) {
-					highestLightValue = lv;
-					cwBearings[cwIndex] = newAngle;
-					cwAssigned = true;
-				} else if ((lv < threshold) && (cwAssigned) && (cwIndex == 0)) {
-					System.out.println("First peak passed. Moving on.");
+				} else if ((lv < threshold) && (!ccw && cwAssigned && cwIndex == 0)) {
 					cwIndex++;
 					highestLightValue = 0;
 				}
 				
 			}
+			
+			highestLightValue = 0;
 		}
 		
 		calculateBearingsFromLightValues(ccwBearings, cwBearings);
