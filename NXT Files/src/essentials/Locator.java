@@ -12,25 +12,64 @@ import lejos.robotics.navigation.Pose;
 class Locator
 
 { 
-
-
-
+	
+	public void locate() {
+		
+		float x = _pose.getX();
+		float y = _pose.getY();
+		float head = _pose.getHeading();
+		float angleToZeroWall = _pose.angleTo(new Point(x, 0));
+		float angleToYWall = _pose.angleTo(new Point(x, hallWidth));
+		
+		int distanceToWall = 255;
+		
+		//Compare pose.getY() to hall width, rotate to & scan closer wall
+		if (y < (hallWidth / 2)) {
+			distanceToWall = scanner.getDistanceToWall(angleToZeroWall);
+		} else {
+			distanceToWall = scanner.getDistanceToWall(angleToYWall);
+		}
+		
+		//Then call scanBeacons() to scan for the beacons
+		float[] bearings = scanBeacons();
+		
+		//Then fix position.
+		fixPosition(bearings, (float) distanceToWall);
+	}
 
 	/**
 	 *sets beaconBearing array based on current position.
 	 *In your robot, , you will use the scanner to get this data
 	 */
 
-	public float[] scanBeacons()
-	{
-		float bearings[] = {0,0};
-
-		System.out.println("Pose"+_pose.getX()+" "+_pose.getY()+" "+_pose.getHeading());
-		//** for testing only.  You will need something much different
-		for (int i = 0; i < 2; i++) {
-			bearings[i] = _pose.angleTo(beacon[i])-_pose.getHeading();// relative bearing;
-			System.out.println(beacon[i]);
+	public float[] scanBeacons() {
+		float x = _pose.getX();
+		float y = _pose.getY();
+		float head = _pose.getHeading();
+		float angleToZeroWall = _pose.angleTo(new Point(x, 0));
+		float angleToYWall = _pose.angleTo(new Point(x, hallWidth));
+		
+		if (x >= 0) {
+			if (y < hallWidth/2) {
+				scanner.lightScan((int) angleToZeroWall, (int) angleToZeroWall - 180);
+			} else {
+				scanner.lightScan((int) angleToYWall, (int) angleToYWall + 180);
+			}
+		} else {
+			if (y < hallWidth/2) {
+				scanner.lightScan((int) angleToZeroWall, (int) angleToZeroWall + 180);
+			} else {
+				scanner.lightScan((int) angleToYWall, (int) angleToYWall - 180);
+			}
 		}
+		
+		int[] intBearings = scanner.getBearings();
+		
+		float[] bearings = {0f, 0f};
+		for (int i = 0; i < 2; i++) {
+			bearings[i] = (float) intBearings[i];
+		}
+		
 		return bearings;
 	}
 
@@ -100,5 +139,6 @@ class Locator
 	public float echoDistance;
 	public float[] _beaconBearing = new float[2];
 
-
+	private Scanner scanner;
+	
 }

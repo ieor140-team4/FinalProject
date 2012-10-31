@@ -33,8 +33,8 @@ public class Scanner {
 		
 		motor.rotateTo(startAngle);
 		
-		int[] ccwBearings = new int[2];
-		int[] cwBearings = new int[2];
+		int[] ccwBearings = {1000, 1000};
+		int[] cwBearings = {1000, 1000};
 		
 		int oldAngle = motor.getTachoCount();
 		int highestLightValue = 0;
@@ -90,35 +90,37 @@ public class Scanner {
 	 * @param cwBearings  the bearings gotten from the clockwise scan
 	 */
 	public void calculateBearingsFromLightValues(int[] ccwBearings, int[] cwBearings) {
-		/*
-		if (ccwBearings[1] == 0) {
+		if (ccwBearings[1] == 1000) {
 			
 			if (Math.abs(ccwBearings[0] - cwBearings[0]) <= 15) {
 				ccwBearings[1] = ccwBearings[0];
-				ccwBearings[0] = 0;
+				ccwBearings[0] = 1000;
 			}
 			
-		} else if (cwBearings[1] == 0) {
+		} else if (cwBearings[1] == 1000) {
 			
 			if (Math.abs(cwBearings[0] - ccwBearings[0]) <= 15) {
 				cwBearings[1] = cwBearings[0];
-				cwBearings[0] = 0;
+				cwBearings[0] = 1000;
 			}
 			
 		}
-		*/
 		
 		for (int i = 0; i < ccwBearings.length; i++) {
-			/*
-			if (ccwBearings[i] == 0) {
+			if (ccwBearings[i] == 1000) {
 				ccwBearings[i] = cwBearings[1 - i];
-			} else if (cwBearings[i] == 0) {
+			} else if (cwBearings[i] == 1000) {
 				cwBearings[i] = ccwBearings[1 - i];
 			}
-			*/
 			
 			bearings[i] = (ccwBearings[i] + cwBearings[1 - i]) / 2;
 		}
+	}
+	
+	public int getDistanceToWall(float angle) {
+		//Given angle from heading to wall, get the distance to that wall
+		
+		return 0;
 	}
 	
 	/**
