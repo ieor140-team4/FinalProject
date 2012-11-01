@@ -9,17 +9,25 @@ import lejos.robotics.navigation.Pose;
  *Starting point navigation lab - for testing the fix method
  *R. Glassey 10/08
  **/
-class Locator
+public class Locator
 
 { 
+
+	public Locator(Scanner s) {
+		scanner = s;
+	}
+	
+	public void setPose(Pose p) {
+		_pose = p;
+	}
 	
 	public void locate() {
 		
 		float x = _pose.getX();
 		float y = _pose.getY();
 		float head = _pose.getHeading();
-		float angleToZeroWall = _pose.angleTo(new Point(x, 0));
-		float angleToYWall = _pose.angleTo(new Point(x, hallWidth));
+		float angleToZeroWall = _pose.relativeBearing(new Point(x, 0));
+		float angleToYWall = _pose.relativeBearing(new Point(x, hallWidth));
 		
 		int distanceToWall = 255;
 		
@@ -46,8 +54,8 @@ class Locator
 		float x = _pose.getX();
 		float y = _pose.getY();
 		float head = _pose.getHeading();
-		float angleToZeroWall = _pose.angleTo(new Point(x, 0));
-		float angleToYWall = _pose.angleTo(new Point(x, hallWidth));
+		float angleToZeroWall = _pose.relativeBearing(new Point(x, 0));
+		float angleToYWall = _pose.relativeBearing(new Point(x, hallWidth));
 		
 		if (x >= 0) {
 			if (y < hallWidth/2) {

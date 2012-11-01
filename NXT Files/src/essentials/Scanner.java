@@ -1,19 +1,21 @@
 package essentials;
 
-import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.NXTRegulatedMotor;
+import lejos.nxt.UltrasonicSensor;
 
 public class Scanner {
 
-	private LightSensor sensor;
+	private LightSensor lightSensor;
+	private UltrasonicSensor ultraSensor;
 	private NXTRegulatedMotor motor;
 	private int[] bearings;
 	
-	public Scanner(NXTRegulatedMotor m, LightSensor ls) {
+	public Scanner(NXTRegulatedMotor m, LightSensor ls, UltrasonicSensor us) {
 		motor = m;
-		sensor = ls;
-		sensor.setFloodlight(false);
+		lightSensor = ls;
+		ultraSensor = us;
+		lightSensor.setFloodlight(false);
 		bearings = new int[2];
 		m.setSpeed(200);
 	}
@@ -55,7 +57,7 @@ public class Scanner {
 			while (motor.isMoving()) {
 				int newAngle = motor.getTachoCount();
 				
-				int lv = sensor.getLightValue();
+				int lv = lightSensor.getLightValue();
 				
 				if ((lv > threshold) && (lv > highestLightValue)) {
 					highestLightValue = lv;
@@ -120,7 +122,9 @@ public class Scanner {
 	public int getDistanceToWall(float angle) {
 		//Given angle from heading to wall, get the distance to that wall
 		
-		return 0;
+		motor.rotateTo((int) angle);
+		
+		return ultraSensor.getDistance();
 	}
 	
 	/**
