@@ -45,24 +45,18 @@ public class Locator
 			}
 		}
 		
-		double lengthOfSensor = 0;
-		double sensorToAxleLength = 4;
-		
-		for (int i = 0; i < 2; i++) {
-			double yy = (double) distanceToWall;
-			double theta = normalize((float) Math.toRadians(_pose.getHeading() - bearings[i]));
-			double dd = (double) sensorToAxleLength;
-			bearings[i] = normalize(_pose.getHeading() - 
-					(float) Math.toDegrees(Math.atan(yy / ((yy / Math.tan(theta)) + dd))));
-		}
-		
-		distanceToWall += (lengthOfSensor - (sensorToAxleLength * Math.sin(_pose.getHeading())));
-		
+	
 		System.out.println("Dist to Wall: " + distanceToWall);
 		System.out.println("Bearings: (" + bearings[0] + "," + bearings[1] + ")");
 		
 		//Then fix position.
 		fixPosition(bearings, (float) distanceToWall);
+		
+		float sensorToAxleLength = 5.5f;
+
+		_pose.setLocation(_pose.pointAt(sensorToAxleLength, _pose.getHeading() + 180));
+	
+		
 		System.out.println("X: " + Math.round(_pose.getX()) + ",Y: "
 				+ Math.round(_pose.getY()) + ",H: " + Math.round(_pose.getHeading()));
 	}
@@ -153,8 +147,8 @@ public class Locator
 	//	Scanner scanner;
 
 
-	float hallWidth = 237f; // cm   - check with scanner.
-	float beaconY = 237f;   // hallWidth -10;  // verify
+	float hallWidth = 239f; // cm   - check with scanner.
+	float beaconY = 239f;   // hallWidth -10;  // verify
 	/**
 	 * beacon coordinates as Point objects;
 	 */

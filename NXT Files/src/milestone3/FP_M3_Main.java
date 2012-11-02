@@ -38,7 +38,7 @@ public class FP_M3_Main {
 
 		Datalogger dl = new Datalogger();
 		Pose p = new Pose();
-		p.setLocation(-30, 35);
+		p.setLocation(240, 185);
 		
 		Button.waitForAnyPress();
 
