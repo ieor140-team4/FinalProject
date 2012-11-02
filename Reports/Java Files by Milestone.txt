@@ -5,3 +5,7 @@ Milestone 2
 	NXT Files/src/experimentation/ScannerTest.java
 	NXT Files/src/experimentation/ScanRecorder.java
 	NXT Files/src/experimentation/UltrasonicTest.java
+Milestone 3
+	NXT Files/src/essentials/Scanner.java
+	NXT Files/src/essentials/Locator.java
+	NXT Files/src/milestone3/FP_M3_Main.java
