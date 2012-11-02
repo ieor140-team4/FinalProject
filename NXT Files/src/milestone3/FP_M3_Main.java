@@ -6,6 +6,7 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
+import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Pose;
 import lejos.util.Datalogger;
 import essentials.ButtonInputter;
@@ -25,37 +26,34 @@ public class FP_M3_Main {
 		Scanner scanner = new Scanner(Motor.B, ls, us);
 		Locator locator = new Locator(scanner);
 
-		Datalogger dl = new Datalogger();
+		double leftWheelDiameter = 5.42; // 5.57
+		double rightWheelDiameter = 5.44; //5.59
+		double trackWidth = 13.72; // 13.4
+		DifferentialPilot dp = new DifferentialPilot(leftWheelDiameter,
+				rightWheelDiameter, trackWidth, Motor.A, Motor.C, false);
+		dp.setAcceleration(1500);
+		dp.setTravelSpeed(30);
+		dp.setRotateSpeed(360);
 
-		ButtonInputter bi = new ButtonInputter();
+		Datalogger dl = new Datalogger();
+		Pose p = new Pose();
+		p.setLocation(240, 185);
+		
+		Button.waitForAnyPress();
 
 		for (int i = 0; i < 4; i++) {
-			LCD.clearDisplay();
-			System.out.println("Now go to heading: " + 90*i);
-			Pose p = bi.display();
+			p.setHeading((float) 90 * i);
+			locator.setPose(p);
 			
 			for (int j = 0; j < 8; j++) {
-				LCD.clearDisplay();
-				locator.setPose(p);
-				System.out.println("Run " + (j+1) + " out of 8");
-				System.out.println("Pose:\nx=" + locator._pose.getX()
-						+ "\ny=" + locator._pose.getY() + "\nH=" + locator._pose.getHeading());
-				Button.waitForAnyPress();
-				
-				
-				
 				locator.locate();
-				Pose newP = locator._pose;
-				float x = Math.round(100 * newP.getX()) / 100;
-				float y = Math.round(100 * newP.getY()) / 100;
-				float heading = Math.round(100 * newP.getHeading()) / 100;
-
-				System.out.println("Pose gotten:\nx=" + x + "\ny=" + y + "\nH=" + heading);
-				dl.writeLog(newP.getX(), newP.getY(), newP.getHeading());
-				Button.waitForAnyPress();
+				dl.writeLog(locator._pose.getX(), locator._pose.getY(), locator._pose.getHeading());
 			}
+			
+			dp.rotate(90);
 		}
 		
+		LCD.clearDisplay();
 		System.out.println("Press button to start transmitting...");
 		Button.waitForAnyPress();
 		dl.transmit();

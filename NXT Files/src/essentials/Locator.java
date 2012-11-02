@@ -31,16 +31,24 @@ public class Locator
 		float angleToYWall = _pose.relativeBearing(new Point(x, hallWidth));
 		
 		int distanceToWall = 255;
+		float[] bearings = {0f, 0f};
 		
 		//Compare pose.getY() to hall width, rotate to & scan closer wall
 		if (y < (hallWidth / 2)) {
 			distanceToWall = scanner.getDistanceToWall(angleToZeroWall);
+			bearings = scanBeacons();
 		} else {
 			distanceToWall = (int) hallWidth - scanner.getDistanceToWall(angleToYWall);
+			float[] tempBearings = scanBeacons();
+			for (int i = 0; i < 2; i++) {
+				bearings[i] = tempBearings[1 - i];
+			}
 		}
 		
+		System.out.println("Dist to Wall: " + distanceToWall);
+		System.out.println("Bearings: (" + bearings[0] + "," + bearings[1] + ")");
+		
 		//Then call scanBeacons() to scan for the beacons
-		float[] bearings = scanBeacons();
 		
 		//Then fix position.
 		fixPosition(bearings, (float) distanceToWall);

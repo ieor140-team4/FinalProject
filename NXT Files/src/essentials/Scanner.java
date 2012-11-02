@@ -2,6 +2,7 @@ package essentials;
 
 import lejos.nxt.LightSensor;
 import lejos.nxt.NXTRegulatedMotor;
+import lejos.nxt.Sound;
 import lejos.nxt.UltrasonicSensor;
 
 public class Scanner {
@@ -17,7 +18,7 @@ public class Scanner {
 		ultraSensor = us;
 		lightSensor.setFloodlight(false);
 		bearings = new int[2];
-		m.setSpeed(200);
+		m.setSpeed(150);
 	}
 	
 	
@@ -31,7 +32,7 @@ public class Scanner {
 	 * @param endAngle   angle to end 1 scan at, in degrees from forward.
 	 */
 	public void lightScan(int startAngle, int endAngle) {
-		int threshold = 42;
+		int threshold = 35;
 		
 		motor.rotateTo(startAngle);
 		
@@ -71,9 +72,17 @@ public class Scanner {
 				} else if ((lv < threshold) && (ccw && ccwAssigned && ccwIndex == 0)) {
 					ccwIndex++;
 					highestLightValue = 0;
+					Sound.playNote(Sound.PIANO, 200, 5);
+					Sound.playNote(Sound.PIANO, 300, 5);
+					Sound.playNote(Sound.PIANO, 400, 5);
+					Sound.playNote(Sound.PIANO, 700, 5);
 				} else if ((lv < threshold) && (!ccw && cwAssigned && cwIndex == 0)) {
 					cwIndex++;
 					highestLightValue = 0;
+					Sound.playNote(Sound.PIANO, 700, 5);
+					Sound.playNote(Sound.PIANO, 400, 5);
+					Sound.playNote(Sound.PIANO, 300, 5);
+					Sound.playNote(Sound.PIANO, 200, 5);
 				}
 				
 			}
