@@ -45,14 +45,15 @@ public class Locator
 			}
 		}
 		
-		double lengthOfSensor = 4;
-		double sensorToAxleLength = 5.5;
+		double lengthOfSensor = 0;
+		double sensorToAxleLength = 4;
 		
 		for (int i = 0; i < 2; i++) {
 			double yy = (double) distanceToWall;
-			double theta = Math.toRadians(bearings[i]);
+			double theta = normalize((float) Math.toRadians(_pose.getHeading() - bearings[i]));
 			double dd = (double) sensorToAxleLength;
-			bearings[i] = (float) Math.toDegrees(Math.atan(yy / ((yy / Math.tan(theta)) + dd)));
+			bearings[i] = normalize(_pose.getHeading() - 
+					(float) Math.toDegrees(Math.atan(yy / ((yy / Math.tan(theta)) + dd))));
 		}
 		
 		distanceToWall += (lengthOfSensor - (sensorToAxleLength * Math.sin(_pose.getHeading())));
@@ -62,6 +63,8 @@ public class Locator
 		
 		//Then fix position.
 		fixPosition(bearings, (float) distanceToWall);
+		System.out.println("X: " + Math.round(_pose.getX()) + ",Y: "
+				+ Math.round(_pose.getY()) + ",H: " + Math.round(_pose.getHeading()));
 	}
 
 	/**
