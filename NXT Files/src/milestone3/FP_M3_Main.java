@@ -36,10 +36,14 @@ public class FP_M3_Main {
 			
 			for (int j = 0; j < 8; j++) {
 				LCD.clearDisplay();
+				locator.setPose(p);
 				System.out.println("Run " + (j+1) + " out of 8");
+				System.out.println("Pose:\nx=" + locator._pose.getX()
+						+ "\ny=" + locator._pose.getY() + "\nH=" + locator._pose.getHeading());
 				Button.waitForAnyPress();
 				
-				locator.setPose(p);
+				
+				
 				locator.locate();
 				Pose newP = locator._pose;
 				float x = Math.round(100 * newP.getX()) / 100;

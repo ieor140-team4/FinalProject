@@ -16,9 +16,9 @@ public class ButtonInputter {
 		 * focus 1 = scrolling through y
 		 * focus 2 = save
 		 */
-		x = 0;
+		x = 240;
 		//ranges from 0 to 5
-		y = 0;
+		y = 185;
 		//ranges from 0 to 7
 		heading = 0;
 	}

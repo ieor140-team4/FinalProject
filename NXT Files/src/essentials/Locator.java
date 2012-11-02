@@ -18,7 +18,8 @@ public class Locator
 	}
 	
 	public void setPose(Pose p) {
-		_pose = p;
+		_pose.setLocation(p.getX(),p.getY());
+		_pose.setHeading(p.getHeading());
 	}
 	
 	public void locate() {
@@ -35,7 +36,7 @@ public class Locator
 		if (y < (hallWidth / 2)) {
 			distanceToWall = scanner.getDistanceToWall(angleToZeroWall);
 		} else {
-			distanceToWall = scanner.getDistanceToWall(angleToYWall);
+			distanceToWall = (int) hallWidth - scanner.getDistanceToWall(angleToYWall);
 		}
 		
 		//Then call scanBeacons() to scan for the beacons
@@ -131,8 +132,8 @@ public class Locator
 	//	Scanner scanner;
 
 
-	float hallWidth = 244f; // cm   - check with scanner.
-	float beaconY = 244f;   // hallWidth -10;  // verify
+	float hallWidth = 237f; // cm   - check with scanner.
+	float beaconY = 237f;   // hallWidth -10;  // verify
 	/**
 	 * beacon coordinates as Point objects;
 	 */

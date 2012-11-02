@@ -122,6 +122,14 @@ public class Scanner {
 	public int getDistanceToWall(float angle) {
 		//Given angle from heading to wall, get the distance to that wall
 		
+		if (Math.abs(angle - motor.getTachoCount()) > 180) {
+			if (angle > motor.getTachoCount()) {
+				angle -= 360;
+			} else {
+				angle += 360;
+			}
+		}
+		
 		motor.rotateTo((int) angle);
 		
 		return ultraSensor.getDistance();
