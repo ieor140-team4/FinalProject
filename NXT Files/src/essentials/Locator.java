@@ -50,9 +50,9 @@ public class Locator
 		
 		for (int i = 0; i < 2; i++) {
 			double yy = (double) distanceToWall;
-			double theta = bearings[i];
+			double theta = Math.toRadians(bearings[i]);
 			double dd = (double) sensorToAxleLength;
-			bearings[i] = (float) Math.atan(yy / ((yy / Math.tan(theta)) + dd));
+			bearings[i] = (float) Math.toDegrees(Math.atan(yy / ((yy / Math.tan(theta)) + dd)));
 		}
 		
 		distanceToWall += (lengthOfSensor - (sensorToAxleLength * Math.sin(_pose.getHeading())));

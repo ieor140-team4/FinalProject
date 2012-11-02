@@ -9,6 +9,7 @@ import lejos.nxt.UltrasonicSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Pose;
 import lejos.util.Datalogger;
+import lejos.util.Delay;
 import essentials.ButtonInputter;
 import essentials.Locator;
 import essentials.Scanner;
@@ -48,6 +49,7 @@ public class FP_M3_Main {
 				locator.setPose(p);
 				locator.locate();
 				dl.writeLog(locator._pose.getX(), locator._pose.getY(), locator._pose.getHeading());
+				Delay.msDelay(100);
 			}
 			
 			dp.rotate(90);
