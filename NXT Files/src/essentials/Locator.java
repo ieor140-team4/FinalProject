@@ -45,10 +45,20 @@ public class Locator
 			}
 		}
 		
+		double lengthOfSensor = 4;
+		double sensorToAxleLength = 5.5;
+		
+		for (int i = 0; i < 2; i++) {
+			double yy = (double) distanceToWall;
+			double theta = bearings[i];
+			double dd = (double) sensorToAxleLength;
+			bearings[i] = (float) Math.atan(yy / ((yy / Math.tan(theta)) + dd));
+		}
+		
+		distanceToWall += (lengthOfSensor - (sensorToAxleLength * Math.sin(_pose.getHeading())));
+		
 		System.out.println("Dist to Wall: " + distanceToWall);
 		System.out.println("Bearings: (" + bearings[0] + "," + bearings[1] + ")");
-		
-		//Then call scanBeacons() to scan for the beacons
 		
 		//Then fix position.
 		fixPosition(bearings, (float) distanceToWall);

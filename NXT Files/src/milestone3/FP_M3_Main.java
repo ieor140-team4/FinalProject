@@ -37,15 +37,15 @@ public class FP_M3_Main {
 
 		Datalogger dl = new Datalogger();
 		Pose p = new Pose();
-		p.setLocation(240, 185);
+		p.setLocation(-30, 35);
 		
 		Button.waitForAnyPress();
 
 		for (int i = 0; i < 4; i++) {
 			p.setHeading((float) 90 * i);
-			locator.setPose(p);
 			
 			for (int j = 0; j < 8; j++) {
+				locator.setPose(p);
 				locator.locate();
 				dl.writeLog(locator._pose.getX(), locator._pose.getY(), locator._pose.getHeading());
 			}
