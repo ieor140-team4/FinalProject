@@ -22,6 +22,17 @@ public class Locator
 		_pose.setHeading(p.getHeading());
 	}
 	
+	/**
+	 * Uses the scanner to locate the robot's position precisely.
+	 * 
+	 * Based on its heading and which side of the hall it is, it figures out
+	 * which wall to turn towards to find the distance to the wall. From there, it
+	 * does a 180 degree scan in the appropriate direction to find the light sources.
+	 * 
+	 * From these three data points, it fixes the position and then corrects to account
+	 * for the fact that the scanning head is not directly above the wheel base.
+	 * 
+	 */
 	public void locate() {
 		
 		float x = _pose.getX();
