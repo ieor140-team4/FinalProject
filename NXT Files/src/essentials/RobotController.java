@@ -12,6 +12,11 @@ public class RobotController {
 	}
 	
 	public void updateMessage(Message m) {
-		
+		switch (m.getType()) {
+		case MOVE:
+			navigator.goTo(m.getData()[0], m.getData()[1]);
+		case STOP:
+			navigator.stop();
+		}
 	}
 }
