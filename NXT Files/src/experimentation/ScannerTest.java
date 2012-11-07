@@ -4,8 +4,8 @@ import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
+import lejos.nxt.UltrasonicSensor;
 import lejos.util.Datalogger;
-import essentials.Scanner;
 
 public class ScannerTest {
 
@@ -15,7 +15,7 @@ public class ScannerTest {
 	public static void main(String[] args) {
 		
 		//Create a scanner and a Datalogger.
-		Scanner scanner = new Scanner(Motor.B, new LightSensor(SensorPort.S2));
+		Scanner scanner = new Scanner(Motor.B, new LightSensor(SensorPort.S2), new UltrasonicSensor(SensorPort.S3));
 		Datalogger dl = new Datalogger();
 		
 		//Scan 8 times at the far point.
