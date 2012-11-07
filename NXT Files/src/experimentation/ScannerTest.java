@@ -6,7 +6,6 @@ import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
 import lejos.util.Datalogger;
-import essentials.Scanner;
 
 public class ScannerTest {
 
