@@ -11,5 +11,7 @@ public class RobotController {
 		navigator = n;
 	}
 	
-	
+	public void updateMessage(Message m) {
+		
+	}
 }
