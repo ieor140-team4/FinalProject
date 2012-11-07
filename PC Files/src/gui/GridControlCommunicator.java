@@ -34,19 +34,25 @@ public class GridControlCommunicator
 		} catch (Exception e) {
 			System.out.println(e );
 		}
+		
+		
 		System.out.println(" conecting to "+name);
-		if(connector.connectTo(name, "", NXTCommFactory.BLUETOOTH)) {
+		
+		if( connector.connectTo(name, "", NXTCommFactory.BLUETOOTH) ) {
 			control.setMessage("Connected to "+name);
 			System.out.println(" connected !");
 			dataIn = new DataInputStream(connector.getInputStream());
 			dataOut = new DataOutputStream( connector.getOutputStream());
+			
 			if (dataIn == null) {
 				System.out.println(" no Data  ");
 			} else if  (!reader.isRunning) {
 				reader.start();
 			}
+			
+		} else {
+			System.out.println(" no connection ");
 		}
-		else System.out.println(" no connection ");
 	}
 
 	/**

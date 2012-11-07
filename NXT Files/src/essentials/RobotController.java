@@ -7,6 +7,7 @@ public class RobotController {
 	private Communicator comm;
 	
 	public RobotController(Navigator n) {
+		System.out.println("Connecting...");
 		comm = new Communicator();
 		navigator = n;
 	}

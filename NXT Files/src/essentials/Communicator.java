@@ -34,7 +34,7 @@ public class Communicator {
 	 * Establishes a bluetooth connection with the computer.
 	 */
 	public void connect() {
-		String waiting = "Waiting for connection...";
+		String waiting = "Waiting for \nconnection...";
 		String connected = "Connected!";
 
 		LCD.drawString(waiting,0,0);
