@@ -1,6 +1,5 @@
 package essentials;
 
-import java.awt.Point;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,12 +9,13 @@ import java.io.OutputStream;
 import lejos.nxt.LCD;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
-import lejos.pc.comm.NXTCommFactory;
 
 public class Communicator {
 	private BTConnection btc;
 	private DataInputStream dis;
 	private DataOutputStream dos;
+	private RobotController controller;
+	private Reader reader;
 
 	/**
 	 * Creates a BTCommunicator object and connects it to the computer,
@@ -85,27 +85,22 @@ public class Communicator {
 			String message = "";
 			while (isRunning) {
 				try {
-					MessageType header = MessageType.values()[dataIn.readInt()];
-					
-					switch (header) {
-					case POS_UPDATE:
-						x = dataIn.readInt();
-						y = dataIn.readInt();
-						message = "Received robot pos: " + x + "," + y;
-						control.drawRobotPath(x, y);
-						
-					case OBS_UPDATE:
-						x = dataIn.readInt();
-						y = dataIn.readInt();
-						message = "Received obstacle pos: " + x + "," + y;
-						control.drawObstacle(x, y);
+					MessageType header = MessageType.values()[dis.readInt()];
+					switch (header){
+					case MOVE:
+						int[] array = new int[2];
+						for (int i = 0; i < 2; i++) {
+							array[i] = dis.readInt();
+						}
+						controller.updateMessage(new Message(header, array));
+					case STOP:
+						controller.updateMessage(new Message(header, null));
 					}
 
 				} catch (IOException e) {
 					System.out.println("Read Exception in GridControlComm");
 					count++;
 				}
-				control.setMessage(message);
 			}
 		}
 	}
