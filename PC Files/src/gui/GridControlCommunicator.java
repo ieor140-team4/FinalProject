@@ -79,6 +79,7 @@ public class GridControlCommunicator
 		System.out.println(" Communicator sending: STOP");
 		try {
 			dataOut.writeInt(MessageType.STOP.ordinal());
+			dataOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

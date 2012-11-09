@@ -127,17 +127,17 @@ public class Communicator {
 					Sound.playNote(Sound.PIANO,300,15);
 					switch (header){
 					case MOVE:
-						Sound.playNote(Sound.PIANO, 325, 15);
 						int[] array = new int[2];
 						for (int i = 0; i < 2; i++) {
 							array[i] = dis.readInt();
 						}
-						Sound.playNote(Sound.PIANO,350,15);
 						controller.updateMessage(new Message(header, array));
+						break;
 					case STOP:
 						controller.updateMessage(new Message(header, null));
+						break;
 					default:
-						Sound.playNote(Sound.PIANO,200,50);
+						System.out.println("Unknown?");
 						break;
 					}
 

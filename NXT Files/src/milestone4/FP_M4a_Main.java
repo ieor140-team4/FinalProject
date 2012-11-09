@@ -24,6 +24,7 @@ public class FP_M4a_Main {
 		Navigator navigator = new Navigator(dp);
 		
 		RobotController controller = new RobotController(navigator);
+		controller.go();
 	}
 
 }

@@ -15,10 +15,13 @@ public class RobotController {
 	public RobotController(Navigator n) {
 		System.out.println("Connecting...");
 		comm = new Communicator();
+		comm.setController(this);
 		navigator = n;
+		inbox = new ArrayList<Message>();
 	}
 	
 	public void updateMessage(Message m) {
+		System.out.println("Updating messages...");
 		if(m.getType() == MessageType.STOP) {
 			inbox.clear();
 			inbox.add(m);
@@ -30,10 +33,7 @@ public class RobotController {
 	public void go() {
 		while(true) {
 			while(!inbox.isEmpty()){
-				Sound.playNote(Sound.PIANO, 400, 15);
-				System.out.println("Here...");
-				Button.waitForAnyPress();
-				
+				System.out.println("Running message!");
 				try {
 					execute(inbox.get(0));
 					inbox.remove(0);
@@ -49,12 +49,16 @@ public class RobotController {
 		switch(m.getType()) {
 		case STOP:
 			navigator.stop();
+			break;
 		case MOVE:
 			navigator.goTo(m.getData()[0], m.getData()[1]);
+			break;
 		case MOVE_HEADING:
 			navigator.goTo(m.getData()[0], m.getData()[1], m.getData()[2]);
+			break;
 		case FIX_POS:
 			locator.locate();
+			break;
 		default:
 			break;
 		}
