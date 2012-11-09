@@ -19,5 +19,5 @@ public class RobotController {
 		case STOP:
 			navigator.stop();
 		}
-	}
+	} 
 }
