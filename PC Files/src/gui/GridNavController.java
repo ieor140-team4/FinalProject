@@ -24,7 +24,10 @@ public class GridNavController extends JFrame implements GNC
 	private JTextField nameField;
 	private JTextField xField;
 	private JTextField yField;
+	private JTextField headingField;
 	private JTextField statusField;
+	private JTextField distField;
+	private JTextField angleField;
 	/**
 	 * provides communications services: sends and recieves NXT data
 	 */
@@ -84,30 +87,72 @@ public class GridNavController extends JFrame implements GNC
 		btnConnect.addActionListener(new BtnConnectActionListener());
 		connectPanel.add(btnConnect);
 
-		JPanel statusPanel = new JPanel();
-		topPanel.add(statusPanel);
+		//Create a panel with information about position: x, y, heading
+		JPanel positionStatusPanel = new JPanel();
+		topPanel.add(positionStatusPanel, BorderLayout.NORTH);
 
 		JLabel lblX = new JLabel("X:");
-		statusPanel.add(lblX);
+		positionStatusPanel.add(lblX);
 
 		xField = new JTextField();
-		statusPanel.add(xField);
+		positionStatusPanel.add(xField);
 		xField.setColumns(5);
 
 		JLabel lblNewLabel = new JLabel("Y:");
-		statusPanel.add(lblNewLabel);
+		positionStatusPanel.add(lblNewLabel);
 
 		yField = new JTextField();
-		statusPanel.add(yField);
+		positionStatusPanel.add(yField);
 		yField.setColumns(5);
+		
+		JLabel lblHeading = new JLabel("Heading:");
+		positionStatusPanel.add(lblHeading);
+		
+		headingField = new JTextField();
+		positionStatusPanel.add(headingField);
+		headingField.setColumns(5);
+		
+		//Create a panel with information about distances, for travelling and rotating.
+		JPanel distStatusPanel = new JPanel();
+		topPanel.add(distStatusPanel, BorderLayout.CENTER);
+		
+		JLabel lblDist = new JLabel("Distance:");
+		distStatusPanel.add(lblDist);
+		
+		distField = new JTextField();
+		distStatusPanel.add(distField);
+		distField.setColumns(5);
+		
+		JLabel lblAngle = new JLabel("Angle:");
+		distStatusPanel.add(lblAngle);
+		
+		angleField = new JTextField();
+		distStatusPanel.add(angleField);
+		angleField.setColumns(5);
 
-		JButton sendButton = new JButton("Send");
-		sendButton.addActionListener(new SendButtonActionListener());
-		statusPanel.add(sendButton);
-
+		//Create a panel with buttons on it for transmitting the info to the robot
+		JPanel buttonPanel = new JPanel();
+		topPanel.add(buttonPanel);
+		
+		JButton sendButton = new JButton("Go To X,Y,H");
+		sendButton.addActionListener(new MoveButtonActionListener());
+		buttonPanel.add(sendButton);
+		
 		JButton stopButton = new JButton("Stop");
 		stopButton.addActionListener(new StopButtonActionListener());
-		statusPanel.add(stopButton);
+		buttonPanel.add(stopButton);
+		
+		JButton travelButton = new JButton("Travel");
+		travelButton.addActionListener(new TravelButtonActionListener());
+		buttonPanel.add(travelButton);
+		
+		JButton rotateButton = new JButton("Rotate");
+		rotateButton.addActionListener(new RotateButtonActionListener());
+		buttonPanel.add(rotateButton);
+		
+		JButton fixButton = new JButton("Fix");
+		fixButton.addActionListener(new FixButtonActionListener());
+		buttonPanel.add(fixButton);
 
 		JPanel panel_2 = new JPanel();
 		topPanel.add(panel_2);
@@ -138,10 +183,10 @@ public class GridNavController extends JFrame implements GNC
 		}
 	}
 
-	private class SendButtonActionListener implements ActionListener {
+	private class MoveButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			System.out.println("Send button pressed.");
-			sendXY();
+			sendMove();
 		}
 	}
 
@@ -151,13 +196,37 @@ public class GridNavController extends JFrame implements GNC
 			sendStop();
 		}
 	}
+	
+	private class TravelButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("Travel button pressed.");
+			sendTravel();
+		}
+	}
+	
+	private class RotateButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("Rotate button pressed.");
+			sendRotate();
+		}
+	}
+	
+	private class FixButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("Fix button pressed.");
+			sendFix();
+		}
+	}
+	
+	
 
-	public void sendXY() {
-		int x = 0;
-		int y = 0;
+	public void sendMove() {
+		float x = 0;
+		float y = 0;
+		float heading = 0;
 
 		try {
-			x = Integer.parseInt(xField.getText());
+			x = Float.parseFloat(xField.getText());
 			System.out.println(" get x " + x);
 		} catch (Exception e) {
 			setMessage("Problem with X field");
@@ -165,19 +234,62 @@ public class GridNavController extends JFrame implements GNC
 		}
 
 		try {
-			y = Integer.parseInt(yField.getText());
+			y = Float.parseFloat(yField.getText());
 			System.out.println(" get y " + y);
 		} catch (Exception e) {
 			setMessage("Problem  with Y field");
 			return;
 		}
+		
+		try {
+			heading = Float.parseFloat(headingField.getText());
+			System.out.println(" get heading " + heading);
+		} catch (Exception e) {
+			setMessage("Problem with heading field");
+			return;
+		}
 
-		communicator.sendMove(x, y);
+		communicator.sendDestination(x, y, heading);
 		repaint();
 	}
 
 	public void sendStop() {
 		communicator.sendStop();
+		repaint();
+	}
+	
+	public void sendFix() {
+		communicator.sendFix();
+		repaint();
+	}
+	
+	public void sendTravel() {
+		float dist = 0;
+		
+		try {
+			dist = Float.parseFloat(distField.getText());
+			System.out.println(" get dist " + dist);
+		} catch (Exception e) {
+			setMessage("Problem with travel field");
+			return;
+		}
+		
+		communicator.sendTravel(dist);
+		repaint();
+	}
+	
+	public void sendRotate() {
+		float angle = 0;
+		
+		try {
+			angle = Float.parseFloat(angleField.getText());
+			System.out.println(" get angle " + angle);
+		} catch (Exception e) {
+			setMessage("Problem with Angle Field");
+			return;
+		}
+		
+		communicator.sendRotate(angle);
 		repaint();
 	}
 
