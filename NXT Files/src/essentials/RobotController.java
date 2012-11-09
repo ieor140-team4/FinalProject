@@ -2,6 +2,8 @@ package essentials;
 
 import java.util.ArrayList;
 
+import lejos.nxt.Button;
+import lejos.nxt.Sound;
 import lejos.robotics.navigation.Navigator;
 
 public class RobotController {
@@ -28,13 +30,22 @@ public class RobotController {
 	public void go() {
 		while(true) {
 			while(!inbox.isEmpty()){
-				execute(inbox.get(0));
-				inbox.remove(0);
+				Sound.playNote(Sound.PIANO, 400, 15);
+				System.out.println("Here...");
+				Button.waitForAnyPress();
+				
+				try {
+					execute(inbox.get(0));
+					inbox.remove(0);
+				} catch (NullPointerException npe) {
+					System.out.println("You are correct.");
+				}
 			}
 		}
 	}
 	
 	public void execute(Message m) {
+		Sound.playNote(Sound.PIANO, 450, 15);
 		switch(m.getType()) {
 		case STOP:
 			navigator.stop();
@@ -42,12 +53,12 @@ public class RobotController {
 			navigator.goTo(m.getData()[0], m.getData()[1]);
 		case MOVE_HEADING:
 			navigator.goTo(m.getData()[0], m.getData()[1], m.getData()[2]);
-		case ROTATE:
-			navigator.rotateTo(m.getData()[0]);
 		case FIX_POS:
 			locator.locate();
 		default:
 			break;
 		}
+		
+		Sound.playNote(Sound.PIANO, 500, 15);
 	} 
 }

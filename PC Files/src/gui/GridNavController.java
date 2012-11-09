@@ -106,7 +106,7 @@ public class GridNavController extends JFrame implements GNC
 		statusPanel.add(sendButton);
 
 		JButton stopButton = new JButton("Stop");
-		sendButton.addActionListener(new StopButtonActionListener());
+		stopButton.addActionListener(new StopButtonActionListener());
 		statusPanel.add(stopButton);
 
 		JPanel panel_2 = new JPanel();

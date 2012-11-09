@@ -66,6 +66,7 @@ public class GridControlCommunicator
 		System.out.println(" Communicator sending: MOVE TO " +x+ ", "+y);
 		try{
 			dataOut.writeInt(MessageType.MOVE.ordinal());
+			System.out.println(MessageType.MOVE.ordinal());
 			dataOut.writeInt(x);
 			dataOut.writeInt(y);
 			dataOut.flush();

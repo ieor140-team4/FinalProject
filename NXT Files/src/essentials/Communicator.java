@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.Sound;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 
@@ -116,18 +118,27 @@ public class Communicator {
 			int x = 0;
 			int y = 0;
 			String message = "";
+			Sound.playNote(Sound.PIANO, 500, 50);
 			while (isRunning) {
 				try {
-					MessageType header = MessageType.values()[dis.readInt()];
+					int headerNumber = dis.readInt();
+					MessageType header = MessageType.values()[headerNumber];
+					System.out.println(header.toString());
+					Sound.playNote(Sound.PIANO,300,15);
 					switch (header){
 					case MOVE:
+						Sound.playNote(Sound.PIANO, 325, 15);
 						int[] array = new int[2];
 						for (int i = 0; i < 2; i++) {
 							array[i] = dis.readInt();
 						}
+						Sound.playNote(Sound.PIANO,350,15);
 						controller.updateMessage(new Message(header, array));
 					case STOP:
 						controller.updateMessage(new Message(header, null));
+					default:
+						Sound.playNote(Sound.PIANO,200,50);
+						break;
 					}
 
 				} catch (IOException e) {
