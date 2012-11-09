@@ -61,14 +61,15 @@ public class GridControlCommunicator
 	 * @param x the x coordinate to travel to
 	 * @param y the y coordinate to travel to
 	 */
-	public void sendMove(int x, int y)
+	public void sendDestination(float x, float y, float heading)
 	{
-		System.out.println(" Communicator sending: MOVE TO " +x+ ", "+y);
+		System.out.println(" Communicator sending: MOVE TO " +x+ ", "+y + " with heading " + heading);
 		try{
 			dataOut.writeInt(MessageType.MOVE.ordinal());
 			System.out.println(MessageType.MOVE.ordinal());
-			dataOut.writeInt(x);
-			dataOut.writeInt(y);
+			dataOut.writeFloat(x);
+			dataOut.writeFloat(y);
+			dataOut.writeFloat(heading);
 			dataOut.flush();
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -79,6 +80,38 @@ public class GridControlCommunicator
 		System.out.println(" Communicator sending: STOP");
 		try {
 			dataOut.writeInt(MessageType.STOP.ordinal());
+			dataOut.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendRotate(float angle) {
+		System.out.println(" Communicator sending: ROTATE");
+		try {
+			dataOut.writeInt(MessageType.ROTATE.ordinal());
+			dataOut.writeFloat(angle);
+			dataOut.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendTravel(float dist) {
+		System.out.println(" Communicator sending: TRAVEL");
+		try {
+			dataOut.writeInt(0);
+			dataOut.writeFloat(dist);
+			dataOut.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendFix() {
+		System.out.println(" Communicator sending: FIX");
+		try {
+			dataOut.writeInt(MessageType.FIX_POS.ordinal());
 			dataOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
