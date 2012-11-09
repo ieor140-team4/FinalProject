@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Sound;
 import lejos.nxt.comm.BTConnection;
@@ -27,11 +26,11 @@ public class Communicator {
 		reader = new Reader();
 		connect();
 	}
-	
+
 	public void setController(RobotController rc) {
 		controller = rc;
 	}
-	
+
 	/**
 	 * Establishes a bluetooth connection with the computer.
 	 */
@@ -47,22 +46,22 @@ public class Communicator {
 		LCD.clear();
 		LCD.drawString(connected,0,0);
 		LCD.refresh();	
-			
+
 		OutputStream os = btc.openOutputStream();
 		dos = new DataOutputStream(os);
 
 		InputStream is = btc.openInputStream();
 		dis = new DataInputStream(is);
-			
+
 		System.out.println("Data stream opened.");
-			
+
 		if (dis == null) {
 			System.out.println(" no Data  ");
 		} else if  (!reader.isRunning) {
 			reader.start();
 		}
 	}
-	
+
 
 	/**
 	 * Sends a message to the computer specified by header, x, and y
@@ -73,9 +72,9 @@ public class Communicator {
 	 * @throws IOException
 	 */
 	public void send(Message m) throws IOException {  
-		dos.writeInt(m.getType().ordinal());
+		dos.writeFloat(m.getType().ordinal());
 		for (int i = 0; i < m.getData().length; i++) {
-			dos.writeInt(m.getData()[i]);
+			dos.writeFloat(m.getData()[i]);
 		}
 	}
 
@@ -89,7 +88,7 @@ public class Communicator {
 		dos.close();
 		btc.close();
 	}
-	
+
 	/**
 	 * reads the  data input stream, and calls DrawRobotPath() and DrawObstacle()
 	 * uses OffScreenDrawing,  dataIn
@@ -111,13 +110,9 @@ public class Communicator {
 		 * 3) the y coordinate of that position
 		 *    
 		 */
-		public void run()
-		{
+		public void run() {
 			System.out.println(" reader started GridControlComm1 ");
 			isRunning = true;
-			int x = 0;
-			int y = 0;
-			String message = "";
 			Sound.playNote(Sound.PIANO, 500, 50);
 			while (isRunning) {
 				try {
@@ -126,12 +121,25 @@ public class Communicator {
 					System.out.println(header.toString());
 					Sound.playNote(Sound.PIANO,300,15);
 					switch (header){
+					case ROTATE:
+						float[] rotate = new float[1];
+						rotate[0] = dis.readFloat();
+						controller.updateMessage(new Message(header, rotate));
+						break;
+					case TRAVEL:
+						float[] travel = new float[1];
+						travel[0] = dis.readFloat();
+						controller.updateMessage(new Message(header, travel));
+						break;
 					case MOVE:
-						int[] array = new int[2];
-						for (int i = 0; i < 2; i++) {
-							array[i] = dis.readInt();
+						float[] move_heading = new float[3];
+						for (int i = 0; i <= 2; i++) {
+							move_heading[i] = dis.readFloat();
 						}
-						controller.updateMessage(new Message(header, array));
+						controller.updateMessage(new Message(header, move_heading));
+						break;
+					case FIX_POS:
+						controller.updateMessage(new Message(header, null));
 						break;
 					case STOP:
 						controller.updateMessage(new Message(header, null));

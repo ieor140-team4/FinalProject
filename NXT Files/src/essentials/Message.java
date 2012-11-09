@@ -3,9 +3,9 @@ package essentials;
 public class Message {
 
 	private MessageType type;
-	private int[] data;
+	private float[] data;
 	
-	public Message(MessageType mt, int[] d) {
+	public Message(MessageType mt, float[] d) {
 		type = mt;
 		data = d;
 	}
@@ -14,7 +14,7 @@ public class Message {
 		return type;
 	}
 	
-	public int[] getData() {
+	public float[] getData() {
 		return data;
 	}
 	
