@@ -134,7 +134,7 @@ public class LocatorTester extends JFrame
          int x0 = 300;
          int y0 = 250;
          int x[]= {0,0};
-         int y[] = {0,0,};
+         int y[] = {0,0};
          for(int i=0;i<2;i++) 
          {   		
             x[i]=x0+(int)(_locator.beacon[i].getX());

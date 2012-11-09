@@ -100,7 +100,7 @@ public class GridControlCommunicator
 	public void sendTravel(float dist) {
 		System.out.println(" Communicator sending: TRAVEL");
 		try {
-			dataOut.writeInt(0);
+			dataOut.writeInt(MessageType.TRAVEL.ordinal());
 			dataOut.writeFloat(dist);
 			dataOut.flush();
 		} catch (IOException e) {

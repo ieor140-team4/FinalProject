@@ -132,7 +132,7 @@ public class GridNavController extends JFrame implements GNC
 
 		//Create a panel with buttons on it for transmitting the info to the robot
 		JPanel buttonPanel = new JPanel();
-		topPanel.add(buttonPanel);
+		topPanel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		JButton sendButton = new JButton("Go To X,Y,H");
 		sendButton.addActionListener(new MoveButtonActionListener());
