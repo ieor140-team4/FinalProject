@@ -41,7 +41,7 @@ public class OffScreenGrid extends javax.swing.JPanel
 		System.out.println("OffScreenGrid  makeImage() called");
 		imageWidth = getSize().width;// size from the panel
 		imageHeight = getSize().height;
-		yOrigin = imageHeight - xOrigin;
+		yOrigin = imageHeight - 50;
 		robotPrevX = xpixel(0);
 		robotPrevY = ypixel(0);
 		offScreenImage = createImage(imageWidth, imageHeight);// the container can make an image
@@ -66,23 +66,26 @@ public class OffScreenGrid extends javax.swing.JPanel
 	public void drawGrid()
 	{
 		if(offScreenImage == null)makeImage();
-		int xmax = 5;
-		int ymax = 7;
+		int xmin = -240;
+		int xmax = 240;
+		int xSpacing = 60;
+		int ymax = 240;
+		int ySpacing = 60;
 		osGraphics.setColor(Color.green); // Set the line color
-		for (int y = 0; y <= ymax; y++)
+		for (int y = 0; y <= ymax; y += ySpacing)
 		{
-			osGraphics.drawLine(xpixel(0), ypixel(y), xpixel(xmax), ypixel(y));//horizontal lines
+			osGraphics.drawLine(xpixel(xmin), ypixel(y), xpixel(xmax), ypixel(y));//horizontal lines
 		}
-		for (int x = 0; x <= xmax; x++)
+		for (int x = xmin; x <= xmax; x += xSpacing)
 		{
 			osGraphics.drawLine(xpixel(x), ypixel(0), xpixel(x), ypixel(ymax));// vertical lines
 		}
 		osGraphics.setColor(Color.black); //set number color 	
-		for (int y = 0; y <= ymax; y++) // number the  y axis
+		for (int y = 0; y <= ymax; y += ySpacing) // number the  y axis
 		{
 			osGraphics.drawString(y + "", xpixel(-0.5f), ypixel(y));
 		}
-		for (int x = 0; x <= xmax; x++) // number the x axis
+		for (int x = 0; x <= xmax; x +=  xSpacing) // number the x axis
 		{
 			osGraphics.drawString(x + "", xpixel(x), ypixel(-0.5f));
 		}
@@ -300,11 +303,11 @@ public class OffScreenGrid extends javax.swing.JPanel
 	/**
 	 * line spacing in  pixels
 	 */
-	public final int gridSpacing = 50;
+	public final int gridSpacing = 1;
 	/**
 	 * origin in pixels from corner of drawing area
 	 */
-	public final int xOrigin = 50;
+	public final int xOrigin = 400;
 	/**
 	 *robot position ; used by checkContinuity, drawRobotPath
 	 */

@@ -62,16 +62,16 @@ public class GridNavController extends JFrame implements GNC
 	public GridNavController()
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 629);
+		setBounds(100, 100, 1000, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
 		JPanel topPanel = new JPanel();
-		topPanel.setBounds(new Rectangle(0, 0, 200, 50));
+		topPanel.setBounds(new Rectangle(0, 0, 240, 480));
 		contentPane.add(topPanel, BorderLayout.NORTH);
-		topPanel.setLayout(new GridLayout(3, 1, 0, 0));
+		topPanel.setLayout(new GridLayout(3, 2, 0, 0));
 
 		JPanel connectPanel = new JPanel();
 		topPanel.add(connectPanel);
@@ -153,6 +153,10 @@ public class GridNavController extends JFrame implements GNC
 		JButton fixButton = new JButton("Fix");
 		fixButton.addActionListener(new FixButtonActionListener());
 		buttonPanel.add(fixButton);
+		
+		JButton pingButton = new JButton("Ping");
+		pingButton.addActionListener(new PingButtonActionListener());
+		buttonPanel.add(pingButton);
 
 		JPanel panel_2 = new JPanel();
 		topPanel.add(panel_2);
@@ -218,8 +222,19 @@ public class GridNavController extends JFrame implements GNC
 		}
 	}
 	
+	private class PingButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("Ping!");
+			sendPing();
+		}
+	}
 	
 
+	public void sendPing() {
+		communicator.sendPing();
+		repaint();
+	}
+	
 	public void sendMove() {
 		float x = 0;
 		float y = 0;

@@ -1,9 +1,14 @@
 package milestone4;
 
+import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
+import lejos.nxt.SensorPort;
+import lejos.nxt.UltrasonicSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Navigator;
+import essentials.Locator;
 import essentials.RobotController;
+import essentials.Scanner;
 
 public class FP_M4a_Main {
 
@@ -23,7 +28,10 @@ public class FP_M4a_Main {
 		
 		Navigator navigator = new Navigator(dp);
 		
-		RobotController controller = new RobotController(navigator);
+		Scanner scanner = new Scanner(Motor.B, new LightSensor(SensorPort.S2), new UltrasonicSensor(SensorPort.S3));
+		Locator locator = new Locator(scanner);
+		
+		RobotController controller = new RobotController(navigator, locator);
 		controller.go();
 	}
 

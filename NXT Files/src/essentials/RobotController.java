@@ -14,11 +14,12 @@ public class RobotController {
 	private ArrayList<Message> inbox;
 	private Locator locator;
 
-	public RobotController(Navigator n) {
+	public RobotController(Navigator n, Locator l) {
 		System.out.println("Connecting...");
 		comm = new Communicator();
 		comm.setController(this);
 		navigator = n;
+		locator = l;
 		inbox = new ArrayList<Message>();
 	}
 

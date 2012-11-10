@@ -117,6 +117,16 @@ public class GridControlCommunicator
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendPing() {
+		System.out.println(" Communicator sending: PING");
+		try {
+			dataOut.writeInt(MessageType.PING.ordinal());
+			dataOut.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * reads the  data input stream, and calls DrawRobotPath() and DrawObstacle()
@@ -169,6 +179,10 @@ public class GridControlCommunicator
 						y = dataIn.readFloat();
 						message = "Received obstacle pos: " + x + "," + y;
 						//control.drawObstacle(x, y);
+						break;
+						
+					case PONG:
+						message = "Pong.";
 						break;
 					}
 

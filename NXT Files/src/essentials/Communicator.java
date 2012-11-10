@@ -74,9 +74,11 @@ public class Communicator {
 	public void send(Message m) throws IOException {
 		System.out.println(m.getType().ordinal());
 		dos.writeInt(m.getType().ordinal());
-		for (int i = 0; i < m.getData().length; i++) {
-			System.out.println(m.getData()[i]);
-			dos.writeFloat(m.getData()[i]);
+		if (m.getData() != null) {
+			for (int i = 0; i < m.getData().length; i++) {
+				System.out.println(m.getData()[i]);
+				dos.writeFloat(m.getData()[i]);
+			}
 		}
 		dos.flush();
 		Sound.playNote(Sound.PIANO, 444, 10);
@@ -151,6 +153,9 @@ public class Communicator {
 						break;
 					case STOP:
 						controller.updateMessage(new Message(header, null));
+						break;
+					case PING:
+						send(new Message(MessageType.PONG, null));
 						break;
 					default:
 						System.out.println("Unknown?");
