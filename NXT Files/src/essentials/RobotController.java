@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import lejos.nxt.Sound;
+import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Navigator;
 import lejos.robotics.navigation.Pose;
 
@@ -12,7 +13,7 @@ public class RobotController {
 	private Communicator comm;
 	private ArrayList<Message> inbox;
 	private Locator locator;
-	
+
 	public RobotController(Navigator n) {
 		System.out.println("Connecting...");
 		comm = new Communicator();
@@ -20,31 +21,30 @@ public class RobotController {
 		navigator = n;
 		inbox = new ArrayList<Message>();
 	}
-	
+
 	public void updateMessage(Message m) {
 		System.out.println("Updating messages...");
 		if(m.getType() == MessageType.STOP) {
 			inbox.clear();
-			inbox.add(m);
+			navigator.stop();
 		} else {
 			inbox.add(m);
 		}
 	}
-	
+
 	public void go() {
+		Message currentMessage;
+
 		while(true) {
 			while(!inbox.isEmpty()){
 				System.out.println("Running message!");
-				try {
-					execute(inbox.get(0));
-					inbox.remove(0);
-				} catch (NullPointerException npe) {
-					System.out.println("You are correct.");
-				}
+				currentMessage = inbox.get(0);
+				inbox.remove(0);
+				execute(currentMessage);
 			}
 		}
 	}
-	
+
 	public void sendPose() {
 		Pose pose = navigator.getPoseProvider().getPose();
 		float[] array = new float[3];
@@ -58,7 +58,7 @@ public class RobotController {
 			System.out.println("Exception thrown");
 		}
 	}
-	
+
 	public void execute(Message m) {
 		Sound.playNote(Sound.PIANO, 450, 15);
 		switch(m.getType()) {
@@ -72,7 +72,7 @@ public class RobotController {
 			navigator.goTo(m.getData()[0], m.getData()[1], m.getData()[2]);
 			while(navigator.isMoving()) {
 				newPose = navigator.getPoseProvider().getPose();
-				
+
 				if (newPose.distanceTo(oldPose.getLocation()) > 10) {
 					oldPose.setLocation(newPose.getLocation());
 					oldPose.setHeading(newPose.getHeading());
@@ -86,19 +86,25 @@ public class RobotController {
 			sendPose();
 			break;
 		case ROTATE:
-			Pose pose = navigator.getPoseProvider().getPose();
-			navigator.goTo(pose.getX(), pose.getY(), (pose.getHeading() + m.getData()[0]));
+			((DifferentialPilot) navigator.getMoveController()).rotate(m.getData()[0]);
+
+			/*Pose pose = navigator.getPoseProvider().getPose();
+			navigator.goTo(pose.getX(), pose.getY(), (pose.getHeading() + m.getData()[0]));*/
+
 			sendPose();
 			break;
 		case TRAVEL:
-			double angle = navigator.getPoseProvider().getPose().getHeading();
+
+			navigator.getMoveController().travel(m.getData()[0]);
+
+			/* double angle = Math.toRadians(navigator.getPoseProvider().getPose().getHeading());
 			float dist = m.getData()[0];
-			navigator.goTo((dist * (float) Math.cos(angle)), (dist * (float) Math.sin(angle)));
+			navigator.goTo((dist * (float) Math.cos(angle)), (dist * (float) Math.sin(angle))); */
 			Pose oldPose2 = navigator.getPoseProvider().getPose();
 			Pose newPose2;
 			while(navigator.isMoving()) {
 				newPose2 = navigator.getPoseProvider().getPose();
-				
+
 				if (newPose2.distanceTo(oldPose2.getLocation()) > 10) {
 					oldPose2.setLocation(newPose2.getLocation());
 					oldPose2.setHeading(newPose2.getHeading());

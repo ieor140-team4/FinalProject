@@ -71,11 +71,16 @@ public class Communicator {
 	 * @param y        the y coordinate of the information
 	 * @throws IOException
 	 */
-	public void send(Message m) throws IOException {  
-		dos.writeFloat(m.getType().ordinal());
+	public void send(Message m) throws IOException {
+		System.out.println(m.getType().ordinal());
+		dos.writeInt(m.getType().ordinal());
 		for (int i = 0; i < m.getData().length; i++) {
+			System.out.println(m.getData()[i]);
 			dos.writeFloat(m.getData()[i]);
 		}
+		dos.flush();
+		Sound.playNote(Sound.PIANO, 444, 10);
+		System.out.println("Send.");
 	}
 
 	/**
@@ -124,11 +129,13 @@ public class Communicator {
 					case ROTATE:
 						float[] rotate = new float[1];
 						rotate[0] = dis.readFloat();
+						System.out.println(rotate[0]);
 						controller.updateMessage(new Message(header, rotate));
 						break;
 					case TRAVEL:
 						float[] travel = new float[1];
 						travel[0] = dis.readFloat();
+						System.out.println(travel[0]);
 						controller.updateMessage(new Message(header, travel));
 						break;
 					case MOVE:
@@ -136,6 +143,7 @@ public class Communicator {
 						for (int i = 0; i <= 2; i++) {
 							move_heading[i] = dis.readFloat();
 						}
+						System.out.println(move_heading[0] + "," + move_heading[1] + "," + move_heading[2]);
 						controller.updateMessage(new Message(header, move_heading));
 						break;
 					case FIX_POS:
