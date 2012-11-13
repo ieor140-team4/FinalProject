@@ -59,6 +59,23 @@ public class RobotController {
 			System.out.println("Exception thrown");
 		}
 	}
+	
+	public void sendPoseWhileMoving(Pose startPose) {
+		Pose newPose;
+		Pose oldPose = startPose;
+		
+		while (navigator.isMoving() || navigator.getMoveController().isMoving()) {
+			newPose = navigator.getPoseProvider().getPose();
+			
+			if (newPose.distanceTo(oldPose.getLocation()) > 10) {
+				oldPose.setLocation(newPose.getLocation());
+				oldPose.setHeading(newPose.getHeading());
+				sendPose();
+			}
+		}
+		
+		sendPose();
+	}
 
 	public void execute(Message m) {
 		Sound.playNote(Sound.PIANO, 450, 15);
@@ -68,19 +85,11 @@ public class RobotController {
 			sendPose();
 			break;
 		case MOVE:
-			Pose oldPose = navigator.getPoseProvider().getPose();
-			Pose newPose;
+			Pose startPose = navigator.getPoseProvider().getPose();
 			navigator.goTo(m.getData()[0], m.getData()[1], m.getData()[2]);
-			while(navigator.isMoving()) {
-				newPose = navigator.getPoseProvider().getPose();
-
-				if (newPose.distanceTo(oldPose.getLocation()) > 10) {
-					oldPose.setLocation(newPose.getLocation());
-					oldPose.setHeading(newPose.getHeading());
-					sendPose();
-				}
-			}
-			sendPose();
+			
+			sendPoseWhileMoving(startPose);
+			
 			break;
 		case FIX_POS:
 			locator.locate();
@@ -96,23 +105,11 @@ public class RobotController {
 			break;
 		case TRAVEL:
 
+			Pose startingPose = navigator.getPoseProvider().getPose();
 			navigator.getMoveController().travel(m.getData()[0]);
+			
+			sendPoseWhileMoving(startingPose);
 
-			/* double angle = Math.toRadians(navigator.getPoseProvider().getPose().getHeading());
-			float dist = m.getData()[0];
-			navigator.goTo((dist * (float) Math.cos(angle)), (dist * (float) Math.sin(angle))); */
-			Pose oldPose2 = navigator.getPoseProvider().getPose();
-			Pose newPose2;
-			while(navigator.isMoving()) {
-				newPose2 = navigator.getPoseProvider().getPose();
-
-				if (newPose2.distanceTo(oldPose2.getLocation()) > 10) {
-					oldPose2.setLocation(newPose2.getLocation());
-					oldPose2.setHeading(newPose2.getHeading());
-					sendPose();
-				}
-			}
-			sendPose();
 			break;
 		default:
 			break;

@@ -160,24 +160,23 @@ public class GridControlCommunicator
 			while (isRunning) {
 				try {
 					int index = dataIn.readInt();
-					System.out.println(index);
 					MessageType header = MessageType.values()[index];
-					System.out.println("Message received - " + header.toString());
+					System.out.println("  Message received - " + header.toString());
 
 					switch (header) {
 					case POS_UPDATE:
 						x = dataIn.readFloat();
 						y = dataIn.readFloat();
 						heading = dataIn.readFloat();
-						System.out.println("Robot position: " + x + "," + y + "," + heading);
+						System.out.println("  Robot position: " + x + "," + y + "," + heading);
 						message = x + "," + y + "," + heading;
-						//control.drawRobotPath(x, y);
+						control.drawRobotPath((int) x,(int) y);
 						break;
 
 					case OBS_UPDATE:
 						x = dataIn.readFloat();
 						y = dataIn.readFloat();
-						message = "Received obstacle pos: " + x + "," + y;
+						message = "  Received obstacle pos: " + x + "," + y;
 						//control.drawObstacle(x, y);
 						break;
 						
