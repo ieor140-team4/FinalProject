@@ -61,15 +61,14 @@ public class GridControlCommunicator
 	 * @param x the x coordinate to travel to
 	 * @param y the y coordinate to travel to
 	 */
-	public void sendDestination(float x, float y, float heading)
+	public void sendDestination(float x, float y)
 	{
-		System.out.println(" Communicator sending: MOVE TO " +x+ ", "+y + " with heading " + heading);
+		System.out.println(" Communicator sending: MOVE TO " +x+ ", "+y);
 		try{
 			dataOut.writeInt(MessageType.MOVE.ordinal());
 			System.out.println(MessageType.MOVE.ordinal());
 			dataOut.writeFloat(x);
 			dataOut.writeFloat(y);
-			dataOut.writeFloat(heading);
 			dataOut.flush();
 		} catch(IOException e) {
 			e.printStackTrace();

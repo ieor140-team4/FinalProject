@@ -166,7 +166,7 @@ public class GridNavController extends JFrame implements GNC
 
 		statusField = new JTextField();
 		panel_2.add(statusField);
-		statusField.setColumns(20);
+		statusField.setColumns(40);
 
 
 		contentPane.add(oSGrid, BorderLayout.CENTER);
@@ -255,16 +255,8 @@ public class GridNavController extends JFrame implements GNC
 			setMessage("Problem  with Y field");
 			return;
 		}
-		
-		try {
-			heading = Float.parseFloat(headingField.getText());
-			System.out.println(" get heading " + heading);
-		} catch (Exception e) {
-			setMessage("Problem with heading field");
-			return;
-		}
 
-		communicator.sendDestination(x, y, heading);
+		communicator.sendDestination(x, y);
 		repaint();
 	}
 

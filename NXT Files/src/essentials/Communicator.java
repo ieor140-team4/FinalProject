@@ -141,12 +141,12 @@ public class Communicator {
 						controller.updateMessage(new Message(header, travel));
 						break;
 					case MOVE:
-						float[] move_heading = new float[3];
-						for (int i = 0; i <= 2; i++) {
-							move_heading[i] = dis.readFloat();
+						float[] move = new float[3];
+						for (int i = 0; i < 2; i++) {
+							move[i] = dis.readFloat();
 						}
-						System.out.println(move_heading[0] + "," + move_heading[1] + "," + move_heading[2]);
-						controller.updateMessage(new Message(header, move_heading));
+						System.out.println(move[0] + "," + move[1]);
+						controller.updateMessage(new Message(header, move));
 						break;
 					case FIX_POS:
 						controller.updateMessage(new Message(header, null));

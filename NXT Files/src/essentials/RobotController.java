@@ -7,6 +7,7 @@ import lejos.nxt.Sound;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Navigator;
 import lejos.robotics.navigation.Pose;
+import lejos.util.Delay;
 
 public class RobotController {
 	private Navigator navigator;
@@ -61,18 +62,11 @@ public class RobotController {
 		}
 	}
 	
-	public void sendPoseWhileMoving(Pose startPose) {
-		Pose newPose;
-		Pose oldPose = startPose;
+	public void sendPoseWhileMoving() {
 		
 		while (navigator.isMoving() || navigator.getMoveController().isMoving()) {
-			newPose = navigator.getPoseProvider().getPose();
-			
-			if (newPose.distanceTo(oldPose.getLocation()) > 10) {
-				oldPose.setLocation(newPose.getLocation());
-				oldPose.setHeading(newPose.getHeading());
-				sendPose();
-			}
+			Delay.msDelay(300);
+			sendPose();
 		}
 		
 		sendPose();
@@ -87,13 +81,14 @@ public class RobotController {
 			break;
 		case MOVE:
 			Pose startPose = navigator.getPoseProvider().getPose();
-			navigator.goTo(m.getData()[0], m.getData()[1], m.getData()[2]);
+			navigator.goTo(m.getData()[0], m.getData()[1]);
 			
-			sendPoseWhileMoving(startPose);
+			sendPoseWhileMoving();
 			
 			break;
 		case FIX_POS:
 			locator.locate();
+			navigator.getPoseProvider().setPose(locator._pose);
 			sendPose();
 			break;
 		case ROTATE:
@@ -107,9 +102,9 @@ public class RobotController {
 		case TRAVEL:
 
 			Pose startingPose = navigator.getPoseProvider().getPose();
-			navigator.getMoveController().travel(m.getData()[0]);
+			navigator.getMoveController().travel(m.getData()[0], true);
 			
-			sendPoseWhileMoving(startingPose);
+			sendPoseWhileMoving();
 
 			break;
 		default:
