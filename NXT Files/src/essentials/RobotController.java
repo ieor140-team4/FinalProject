@@ -28,6 +28,7 @@ public class RobotController {
 		if(m.getType() == MessageType.STOP) {
 			inbox.clear();
 			navigator.stop();
+			navigator.clearPath();
 		} else {
 			inbox.add(m);
 		}
@@ -80,7 +81,7 @@ public class RobotController {
 	public void execute(Message m) {
 		Sound.playNote(Sound.PIANO, 450, 15);
 		switch(m.getType()) {
-		case STOP:
+		case STOP: //never called
 			navigator.stop();
 			sendPose();
 			break;

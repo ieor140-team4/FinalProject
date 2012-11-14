@@ -20,7 +20,7 @@ public class OffScreenGrid extends javax.swing.JPanel
 		initComponents();
 		setBackground(Color.white);
 		System.out.println(" OffScreen Drawing constructor ");
-//		makeImage();
+		//		makeImage();
 	}
 
 	public void paintComponent(Graphics g)
@@ -51,7 +51,7 @@ public class OffScreenGrid extends javax.swing.JPanel
 		System.out.println( offScreenImage == null);
 		if(offScreenImage == null)
 		{
-//			System.out.println("Null image" );
+			//			System.out.println("Null image" );
 			offScreenImage =  createImage(imageWidth, imageHeight);
 		}
 		osGraphics = (Graphics2D) offScreenImage.getGraphics();
@@ -89,7 +89,7 @@ public class OffScreenGrid extends javax.swing.JPanel
 		{
 			osGraphics.drawString(x + "", xpixel(x), ypixel(-0.5f));
 		}
-		drawRobotPath(0, 0);
+		drawRobotPath(0, 0, 0);
 
 	}
 
@@ -130,29 +130,18 @@ public class OffScreenGrid extends javax.swing.JPanel
 	/**
 	 *blue line connects current robot position to last position if adjacent to current position
 	 */
-	public void drawRobotPath(int xx, int yy)
-	{
-
+	public void drawRobotPath(int xx, int yy, int heading) {
+		
 		int x = xpixel(xx); // coordinates of intersection
 		int y = ypixel(yy);
-		if (checkContinuity(x, y))
-		{
-			osGraphics.setColor(Color.blue);
-			osGraphics.drawLine(robotPrevX, robotPrevY, x, y);
-		}
-		if (block)
-		{
-			block = false;
-		} else
-		{
-			clearSpot(robotPrevX, robotPrevY, Color.BLUE);
-		}
 		osGraphics.setColor(Color.blue);
-		osGraphics.fillOval(x - 5, y - 5, 10, 10);  //show robot position
+		drawPose(x, y, heading, Color.BLUE);
+		osGraphics.drawLine(robotPrevX, robotPrevY, x, y);
 		robotPrevX = x;
 		robotPrevY = y;
 		repaint();
 	}
+	
 
 	/**
 	 * clear the old robot position, arg pixels
@@ -162,26 +151,40 @@ public class OffScreenGrid extends javax.swing.JPanel
 		System.out.println("clear spot ");
 		if(osGraphics == null)System.out.println("null osGraphics");
 		osGraphics.setColor(Color.white);
-		osGraphics.fillOval(x - 5, y - 5, 10, 10);
+		osGraphics.fillOval(x - 6, y - 6, 12, 12);
 		osGraphics.setColor(c);
 		osGraphics.drawLine(x - 5, y, x + 5, y);
 		osGraphics.drawLine(x, y - 5, x, y + 5);
 	}
 
-	/**
-	 *see of robot has moved to adjacent node - used by drawRobotPath
-	 */
-	private boolean checkContinuity(int x, int y)
-	{
-		if ((abs(x - robotPrevX) == 0 && abs(y - robotPrevY) == gridSpacing) ||
-				(abs(x - robotPrevX) == gridSpacing && abs(y - robotPrevY) == 0) ||
-				(abs(x - robotPrevX) == 0 && abs(y - robotPrevY) == 0))
-		{
-			return true;
-		} else
-		{
-			return false;
+
+	private void drawPose(int x, int y, int heading, Color c) {
+		osGraphics.setColor(Color.WHITE);
+		osGraphics.fillPolygon(poseTriangle);
+
+		poseTriangle = new Polygon();
+
+		int newX;
+		int newY;
+		int radius;
+
+		for (int i = 0; i < 3; i++) {
+
+			if (i == 0) {
+				radius = 10;
+			} else {
+				radius = 6;
+			}
+			newX = x + (int) (radius * Math.cos(Math.toRadians(heading + (120 * i))));
+			newY = y - (int) (radius * Math.sin(Math.toRadians(heading + (120 * i))));
+
+
+			poseTriangle.addPoint(newX, newY);
+			System.out.println("Point " + i + ": (" + newX + "," + newY + ")");
 		}
+
+		osGraphics.setColor(c);
+		osGraphics.fillPolygon(poseTriangle);
 	}
 
 	public int abs(int a)
@@ -251,7 +254,7 @@ public class OffScreenGrid extends javax.swing.JPanel
 						.addComponent(clearB)
 						.addContainerGap(412, Short.MAX_VALUE))
 				);
-		
+
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void clearBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBActionPerformed
@@ -267,10 +270,10 @@ public class OffScreenGrid extends javax.swing.JPanel
 	private void formMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_formMouseClicked
 	{
 		clearSpot(xpixel(destXo), ypixel(destYo), Color.green);
-		
+
 		destXo = gridX(evt.getX());
 		destYo = gridY(evt.getY());
-		
+
 		textX.setText(destXo + "");
 		textY.setText(destYo + "");
 		drawDest(destXo, destYo);
@@ -322,6 +325,7 @@ public class OffScreenGrid extends javax.swing.JPanel
 	 * node status - true if blocked; set by drawObstacle, used by drawRobotPath
 	 */
 	private boolean block = false;
+	private Polygon poseTriangle = new Polygon();
 	public JTextField textX;
 	public JTextField textY;
 }

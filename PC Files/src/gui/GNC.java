@@ -9,7 +9,7 @@ package gui;
 public interface GNC
 {
 	public void setMessage(String s);
-	public void drawRobotPath(int x, int y);
+	public void drawRobotPath(int x, int y, int heading);
 	public void drawObstacle(int x,int y);
 	
 }

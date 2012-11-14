@@ -170,7 +170,7 @@ public class GridControlCommunicator
 						heading = dataIn.readFloat();
 						System.out.println("  Robot position: " + x + "," + y + "," + heading);
 						message = x + "," + y + "," + heading;
-						control.drawRobotPath((int) x,(int) y);
+						control.drawRobotPath((int) x,(int) y, (int) heading);
 						break;
 
 					case OBS_UPDATE:

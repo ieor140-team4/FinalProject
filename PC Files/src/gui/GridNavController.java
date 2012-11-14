@@ -312,8 +312,8 @@ public class GridNavController extends JFrame implements GNC
 		statusField.setText(message);
 	}
 
-	public void drawRobotPath(int x, int y) {
-		oSGrid.drawRobotPath(x, y);
+	public void drawRobotPath(int x, int y, int heading) {
+		oSGrid.drawRobotPath(x, y, heading);
 	}
 
 	public void drawObstacle(int x, int y) {
