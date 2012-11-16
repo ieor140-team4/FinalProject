@@ -121,9 +121,8 @@ public class RobotController {
 		case FIX_POS:
 			locator.setPose(navigator.getPoseProvider().getPose());
 			locator.locate();
-			if (locator._pose.distanceTo(navigator.getPoseProvider().getPose().getLocation()) <= 30) {
-				navigator.getPoseProvider().setPose(locator._pose);
-			}
+			navigator.getPoseProvider().setPose(locator._pose);
+			
 			sendPose();
 			break;
 		case ROTATE:
@@ -147,6 +146,7 @@ public class RobotController {
 			locator._pose.setHeading(m.getData()[2]);
 			
 			navigator.getPoseProvider().setPose(locator._pose);
+			sendPose();
 			break;
 		default:
 			break;
