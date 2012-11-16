@@ -157,6 +157,12 @@ public class Communicator {
 					case PING:
 						send(new Message(MessageType.PONG, null));
 						break;
+					case SET_POSE:
+						float[] newPose = new float[3];
+						for (int i = 0; i < 2; i++) {
+							newPose[i] = dis.readFloat();
+						}
+						controller.updateMessage(new Message(header, newPose));
 					default:
 						System.out.println("Unknown?");
 						break;

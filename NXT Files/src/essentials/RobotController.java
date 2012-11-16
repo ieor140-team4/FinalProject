@@ -61,14 +61,14 @@ public class RobotController {
 			System.out.println("Exception thrown");
 		}
 	}
-	
+
 	public void sendPoseWhileMoving() {
-		
+
 		while (navigator.isMoving() || navigator.getMoveController().isMoving()) {
 			Delay.msDelay(300);
 			sendPose();
 		}
-		
+
 		sendPose();
 	}
 
@@ -82,13 +82,16 @@ public class RobotController {
 		case MOVE:
 			Pose startPose = navigator.getPoseProvider().getPose();
 			navigator.goTo(m.getData()[0], m.getData()[1]);
-			
+
 			sendPoseWhileMoving();
-			
+
 			break;
 		case FIX_POS:
+			locator.setPose(navigator.getPoseProvider().getPose());
 			locator.locate();
-			navigator.getPoseProvider().setPose(locator._pose);
+			if (locator._pose.distanceTo(navigator.getPoseProvider().getPose().getLocation()) <= 30) {
+				navigator.getPoseProvider().setPose(locator._pose);
+			}
 			sendPose();
 			break;
 		case ROTATE:
@@ -103,10 +106,15 @@ public class RobotController {
 
 			Pose startingPose = navigator.getPoseProvider().getPose();
 			navigator.getMoveController().travel(m.getData()[0], true);
-			
+
 			sendPoseWhileMoving();
 
 			break;
+		case SET_POSE:
+			locator._pose.setLocation(m.getData()[0], m.getData()[1]);
+			locator._pose.setHeading(m.getData()[2]);
+			
+			navigator.getPoseProvider().setPose(locator._pose);
 		default:
 			break;
 		}

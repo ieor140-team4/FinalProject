@@ -193,6 +193,13 @@ public class GridNavController extends JFrame implements GNC
 			sendMove();
 		}
 	}
+	
+	private class SetPoseButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("Set pose button pressed.");
+			sendSetPose();
+		}
+	}
 
 	private class StopButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
@@ -260,6 +267,39 @@ public class GridNavController extends JFrame implements GNC
 		repaint();
 	}
 
+	public void sendSetPose() {
+		float x = 0;
+		float y = 0;
+		float heading = 0;
+		
+		try {
+			x = Float.parseFloat(xField.getText());
+			System.out.println(" get x " + x);
+		} catch (Exception e) {
+			setMessage("Problem with X field");
+			return;
+		}
+
+		try {
+			y = Float.parseFloat(yField.getText());
+			System.out.println(" get y " + y);
+		} catch (Exception e) {
+			setMessage("Problem  with Y field");
+			return;
+		}
+		
+		try {
+			heading = Float.parseFloat(headingField.getText());
+			System.out.println(" get heading " + heading);
+		} catch (Exception e) {
+			setMessage("Problem  with Heading field");
+			return;
+		}
+		
+		communicator.sendSetPose(x, y, heading);
+		repaint();
+	}
+	
 	public void sendStop() {
 		communicator.sendStop();
 		repaint();

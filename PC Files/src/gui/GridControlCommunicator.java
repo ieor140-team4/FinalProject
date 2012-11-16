@@ -84,6 +84,19 @@ public class GridControlCommunicator
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendSetPose(float x, float y, float heading) {
+		System.out.println(" Communicator sending: SET POSE");
+		try {
+			dataOut.writeInt(MessageType.SET_POSE.ordinal());
+			dataOut.writeFloat(x);
+			dataOut.writeFloat(y);
+			dataOut.writeFloat(heading);
+			dataOut.flush();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
 
 	public void sendRotate(float angle) {
 		System.out.println(" Communicator sending: ROTATE");
