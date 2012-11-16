@@ -115,6 +115,7 @@ public class RobotController {
 			locator._pose.setHeading(m.getData()[2]);
 			
 			navigator.getPoseProvider().setPose(locator._pose);
+			break;
 		default:
 			break;
 		}

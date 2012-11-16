@@ -157,6 +157,10 @@ public class GridNavController extends JFrame implements GNC
 		JButton pingButton = new JButton("Ping");
 		pingButton.addActionListener(new PingButtonActionListener());
 		buttonPanel.add(pingButton);
+		
+		JButton setPoseButton = new JButton("Set Pose");
+		setPoseButton.addActionListener(new SetPoseButtonActionListener());
+		buttonPanel.add(setPoseButton);
 
 		JPanel panel_2 = new JPanel();
 		topPanel.add(panel_2);

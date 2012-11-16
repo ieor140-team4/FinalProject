@@ -159,10 +159,11 @@ public class Communicator {
 						break;
 					case SET_POSE:
 						float[] newPose = new float[3];
-						for (int i = 0; i < 2; i++) {
+						for (int i = 0; i < 3; i++) {
 							newPose[i] = dis.readFloat();
 						}
 						controller.updateMessage(new Message(header, newPose));
+						break;
 					default:
 						System.out.println("Unknown?");
 						break;
