@@ -2,8 +2,8 @@ package essentials;
 
 public class PolarPoint {
 	
-	public int dist;
-	public int angle;
+	public float dist;
+	public float angle;
 	
 	public PolarPoint(int d, int a) {
 		dist = d;

@@ -3,13 +3,14 @@ package essentials;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import lejos.geom.Point;
 import lejos.nxt.Sound;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Navigator;
 import lejos.robotics.navigation.Pose;
 import lejos.util.Delay;
 
-public class RobotController {
+public class RobotController implements ObstacleListener {
 	private Navigator navigator;
 	private Communicator comm;
 	private ArrayList<Message> inbox;
@@ -76,6 +77,21 @@ public class RobotController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Exception thrown");
+		}
+	}
+	
+	private void sendObstacle(PolarPoint obstacleLocation) {
+		float[] array = new float[2];
+		Pose pose = navigator.getPoseProvider().getPose();
+		Point pt = pose.pointAt(obstacleLocation.dist, obstacleLocation.angle);
+		
+		array[0] = pt.x;
+		array[1] = pt.y;
+		
+		try {
+			comm.send(new Message(MessageType.OBS_UPDATE, array));
+		} catch (IOException ioe) {
+			System.out.println("Exception thrown updating obstacle.");
 		}
 	}
 
@@ -153,4 +169,8 @@ public class RobotController {
 		}
 		Sound.playNote(Sound.PIANO, 500, 15);
 	} 
+	
+	public void objectFound(PolarPoint obstacleLocation) {
+		sendObstacle(obstacleLocation);		
+	}
 }
