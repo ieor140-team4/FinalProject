@@ -9,3 +9,12 @@ Milestone 3
 	NXT Files/src/essentials/Scanner.java
 	NXT Files/src/essentials/Locator.java
 	NXT Files/src/milestone3/FP_M3_Main.java
+Milestone 4
+	NXT Files/src/essentials/RobotController.java
+	NXT Files/src/essentials/Communicator.java
+	NXT Files/src/essentials/MessageType.java
+	NXT Files/src/essentials/Message.java
+	PC FIles/src/essentials/MessageType.java
+	PC Files/src/gui/GridNavController.java
+	PC Files/src/gui/GridControlCommunicator.java
+	PC Files/src/gui/OffScreenGrid.java
