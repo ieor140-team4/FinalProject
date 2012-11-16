@@ -86,7 +86,7 @@ public class Communicator {
 	}
 
 	/**
-	 * Exits stuff.
+	 * Closes all the data streams.
 	 * 
 	 * @throws IOException
 	 */
@@ -109,12 +109,13 @@ public class Communicator {
 
 		/**
 		 * Runs the reader and takes in readings that the robot sends. The robot's
-		 * communications will contain three pieces of information in order:
+		 * communications contain two parts: a MessageType that indicates what the
+		 * message means the robot to do, and an array of floats that represent the
+		 * data included in that message.
 		 * 
-		 * 1) a header that indicates the type of message sent. 0 for the robot's
-		 * position, 1 for an obstacle's position
-		 * 2) the x coordinate of that position
-		 * 3) the y coordinate of that position
+		 * The size of the float array depends on the message type, so this method
+		 * must parse the message type to construct a message object with an accurate
+		 * amount of data.
 		 *    
 		 */
 		public void run() {

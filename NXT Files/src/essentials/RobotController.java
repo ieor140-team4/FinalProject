@@ -24,6 +24,15 @@ public class RobotController {
 		inbox = new ArrayList<Message>();
 	}
 
+	/**
+	 * Puts the given message in the robot controller's inbox.
+	 * 
+	 * For any messages besides STOP, they will be read FIFO. A STOP
+	 * message will clear the controller's inbox and its current path, as well
+	 * as telling the navigator to stop.
+	 * 
+	 * @param m the message to be put in the inbox
+	 */
 	public void updateMessage(Message m) {
 		System.out.println("Updating messages...");
 		if(m.getType() == MessageType.STOP) {
@@ -35,6 +44,10 @@ public class RobotController {
 		}
 	}
 
+	/**
+	 * Upon execution of this command, the robot controller will begin listening to
+	 * its inbox for new messages, executing and removing messages as they come in.
+	 */
 	public void go() {
 		Message currentMessage;
 
@@ -48,7 +61,11 @@ public class RobotController {
 		}
 	}
 
-	public void sendPose() {
+	/**
+	 * This method gets the current pose from the navigator and passes a message
+	 * to the communicator for it to send to the PC.
+	 */
+	private void sendPose() {
 		Pose pose = navigator.getPoseProvider().getPose();
 		float[] array = new float[3];
 		array[0] = pose.getX();
@@ -62,7 +79,11 @@ public class RobotController {
 		}
 	}
 
-	public void sendPoseWhileMoving() {
+	/**
+	 * This function recurringly calls the sendPose method every 300 ms, so that
+	 * the computer can keep track of what the robot is up to while it's moving.
+	 */
+	private void sendPoseWhileMoving() {
 
 		while (navigator.isMoving() || navigator.getMoveController().isMoving()) {
 			Delay.msDelay(300);
@@ -72,7 +93,18 @@ public class RobotController {
 		sendPose();
 	}
 
-	public void execute(Message m) {
+	/**
+	 * Parses the given message and acts on it accordingly.
+	 * 
+	 * MOVE: calls the navigator to move to a given x,y
+	 * TRAVEL: calls the navigator's differential pilot to travel a given dist
+	 * ROTATE: calls the navigator's differential pilot to rotate a given angle
+	 * FIX: calls the locator to fix the robot's position and update the stored pose in navigator
+	 * SET POSE: updates the locator's and navigator's pose to a given pose for human correction
+	 * 
+	 * @param m
+	 */
+	private void execute(Message m) {
 		Sound.playNote(Sound.PIANO, 450, 15);
 		switch(m.getType()) {
 		case STOP: //never called
