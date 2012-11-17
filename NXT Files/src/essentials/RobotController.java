@@ -137,6 +137,7 @@ public class RobotController implements ObstacleListener {
 		case FIX_POS:
 			locator.setPose(navigator.getPoseProvider().getPose());
 			locator.locate();
+			locator.printPose();
 			navigator.getPoseProvider().setPose(locator._pose);
 			
 			sendPose();

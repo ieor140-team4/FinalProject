@@ -150,6 +150,10 @@ public class Communicator {
 						controller.updateMessage(new Message(header, move));
 						break;
 					case FIX_POS:
+						dis.readFloat();
+						dis.readFloat();
+						dis.readFloat();
+						dis.readBoolean();
 						controller.updateMessage(new Message(header, null));
 						break;
 					case STOP:
@@ -163,6 +167,7 @@ public class Communicator {
 						for (int i = 0; i < 3; i++) {
 							newPose[i] = dis.readFloat();
 						}
+						dis.readBoolean();
 						controller.updateMessage(new Message(header, newPose));
 						break;
 					default:
