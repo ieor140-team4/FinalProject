@@ -128,7 +128,13 @@ public class Scanner {
 		}
 	}
 	
-	public int getDistanceToWall(float angle) {
+	/**
+	 * Returns the echo distance to something at a specific angle.
+	 * 
+	 * @param angle the angle the head should go to
+	 * @return the echo distance at that angle
+	 */
+	public int getEchoDistance(float angle) {
 		//Given angle from heading to wall, get the distance to that wall
 		
 		if (Math.abs(angle - motor.getTachoCount()) > 180) {
@@ -142,6 +148,35 @@ public class Scanner {
 		motor.rotateTo((int) angle);
 		
 		return ultraSensor.getDistance();
+	}
+	
+	/** 
+	 * Returns the echo distance at the angle the scanner head is currently facing
+	 * @return the echo distance
+	 */
+	public int getEchoDistance() {
+		return ultraSensor.getDistance();
+	}
+	
+	/**
+	 * Rotates the scanner head to a specific angle.
+	 * 
+	 * @param angle the angle the head to rotate to
+	 */
+	public void rotateHeadTo(float angle) {
+		if (Math.abs(angle - motor.getTachoCount()) > 180) {
+			if (angle > motor.getTachoCount()) {
+				angle -= 360;
+			} else {
+				angle += 360;
+			}
+		}
+		
+		motor.rotateTo((int) angle);
+	}
+	
+	public int getHeadAngle() {
+		return motor.getTachoCount();
 	}
 	
 	/**

@@ -79,15 +79,15 @@ public class RobotController implements ObstacleListener {
 			System.out.println("Exception thrown");
 		}
 	}
-	
+
 	private void sendObstacle(PolarPoint obstacleLocation) {
 		float[] array = new float[2];
 		Pose pose = navigator.getPoseProvider().getPose();
 		Point pt = pose.pointAt(obstacleLocation.dist, obstacleLocation.angle);
-		
+
 		array[0] = pt.x;
 		array[1] = pt.y;
-		
+
 		try {
 			comm.send(new Message(MessageType.OBS_UPDATE, array));
 		} catch (IOException ioe) {
@@ -96,14 +96,28 @@ public class RobotController implements ObstacleListener {
 	}
 
 	/**
-	 * This function recurringly calls the sendPose method every 300 ms, so that
-	 * the computer can keep track of what the robot is up to while it's moving.
+	 * This function sends pose, if desired, every 300 ms, as well as sending
+	 * the echo distance in the direction the head is currently facing every
+	 * 50 ms, if desired.
+	 * 
+	 * @param sendPose if true, the robot will send the pose every 300 ms
+	 * @param sendObstacles if true, the robot will send the echo dist every 50 ms
 	 */
-	private void sendPoseWhileMoving() {
+	private void sendDataWhileMoving(boolean sendPose, boolean sendObstacles) {
 
 		while (navigator.isMoving() || navigator.getMoveController().isMoving()) {
-			Delay.msDelay(300);
-			sendPose();
+			int obsDist;
+			int headAngle = locator.getScanner().getHeadAngle();
+			for (int i = 0; i < 6; i++) {
+				Delay.msDelay(50);
+				if (sendObstacles) {
+					obsDist = locator.getScanner().getEchoDistance();
+					sendObstacle(new PolarPoint(obsDist, headAngle));
+				}
+				if ((i == 5) && (sendPose)) {
+					sendPose();
+				}
+			}
 		}
 
 		sendPose();
@@ -131,7 +145,7 @@ public class RobotController implements ObstacleListener {
 			Pose startPose = navigator.getPoseProvider().getPose();
 			navigator.goTo(m.getData()[0], m.getData()[1]);
 
-			sendPoseWhileMoving();
+			sendDataWhileMoving(true, false);
 
 			break;
 		case FIX_POS:
@@ -139,7 +153,7 @@ public class RobotController implements ObstacleListener {
 			locator.locate();
 			locator.printPose();
 			navigator.getPoseProvider().setPose(locator._pose);
-			
+
 			sendPose();
 			break;
 		case ROTATE:
@@ -155,22 +169,37 @@ public class RobotController implements ObstacleListener {
 			Pose startingPose = navigator.getPoseProvider().getPose();
 			navigator.getMoveController().travel(m.getData()[0], true);
 
-			sendPoseWhileMoving();
+			sendDataWhileMoving(true, false);
 
 			break;
 		case SET_POSE:
 			locator._pose.setLocation(m.getData()[0], m.getData()[1]);
 			locator._pose.setHeading(m.getData()[2]);
-			
+
 			navigator.getPoseProvider().setPose(locator._pose);
 			sendPose();
+			break;
+		case MAP_TO:
+			Pose starterPose = navigator.getPoseProvider().getPose();
+
+			locator.getScanner().rotateHeadTo(m.getData()[0]);
+
+			navigator.goTo(m.getData()[1], m.getData()[2]);
+
+			sendDataWhileMoving(true, true);
+			
+			break;
+		case MARCO_POLO:
+			locator.getScanner().rotateHeadTo(m.getData()[0]);
+			int echoDist = locator.getScanner().getEchoDistance();
+			sendObstacle(new PolarPoint(echoDist, locator.getScanner().getHeadAngle()));
 			break;
 		default:
 			break;
 		}
 		Sound.playNote(Sound.PIANO, 500, 15);
 	} 
-	
+
 	public void objectFound(PolarPoint obstacleLocation) {
 		sendObstacle(obstacleLocation);		
 	}

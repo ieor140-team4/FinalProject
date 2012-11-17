@@ -47,10 +47,10 @@ public class Locator
 
 		//Compare pose.getY() to hall width, rotate to & scan closer wall
 		if (y < (hallWidth / 2)) {
-			distanceToWall = scanner.getDistanceToWall(angleToZeroWall);
+			distanceToWall = scanner.getEchoDistance(angleToZeroWall);
 			bearings = scanBeacons();
 		} else {
-			distanceToWall = (int) hallWidth - scanner.getDistanceToWall(angleToYWall);
+			distanceToWall = (int) hallWidth - scanner.getEchoDistance(angleToYWall);
 			float[] tempBearings = scanBeacons();
 			for (int i = 0; i < 2; i++) {
 				bearings[i] = tempBearings[1 - i];
@@ -118,6 +118,15 @@ public class Locator
 		}
 
 		return bearings;
+	}
+	
+	/**
+	 * Allows access to the scanner contained in locator.
+	 * 
+	 * @return the Scanner object that locator is using.
+	 */
+	public Scanner getScanner() {
+		return scanner;
 	}
 
 

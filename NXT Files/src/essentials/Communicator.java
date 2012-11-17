@@ -165,6 +165,18 @@ public class Communicator {
 						}
 						controller.updateMessage(new Message(header, newPose));
 						break;
+					case MAP_TO:
+						float[] mapCoords = new float[3];
+						for (int i = 0; i < 3; i++) {
+							mapCoords[i] = dis.readFloat();
+						}
+						controller.updateMessage(new Message(header, mapCoords));
+						break;
+					case MARCO_POLO:
+						float[] marco = new float[1];
+						marco[0] = dis.readFloat();
+						controller.updateMessage(new Message(header, marco));
+						break;
 					default:
 						System.out.println("Unknown?");
 						break;
