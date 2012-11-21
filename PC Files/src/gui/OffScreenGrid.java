@@ -114,7 +114,7 @@ public class OffScreenGrid extends javax.swing.JPanel
 		y = ypixel(y);
 		block = true;
 		osGraphics.setColor(Color.magenta);
-		osGraphics.fillOval(x - 5, y - 5, 10, 10);//bounding rectangle is 10 x 10
+		osGraphics.fillOval(x - 1, y - 1, 2, 2);//bounding rectangle is 10 x 10
 		repaint();
 	}
 
@@ -222,6 +222,15 @@ public class OffScreenGrid extends javax.swing.JPanel
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
+
+		addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				formMouseClicked(evt);
+			}
+		});
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+		this.setLayout(layout);
+
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void clearBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBActionPerformed

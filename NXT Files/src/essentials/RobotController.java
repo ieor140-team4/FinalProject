@@ -83,7 +83,7 @@ public class RobotController implements ObstacleListener {
 	private void sendObstacle(PolarPoint obstacleLocation) {
 		float[] array = new float[2];
 		Pose pose = navigator.getPoseProvider().getPose();
-		Point pt = pose.pointAt(obstacleLocation.dist, obstacleLocation.angle);
+		Point pt = pose.pointAt(obstacleLocation.dist, obstacleLocation.angle + pose.getHeading());
 
 		array[0] = pt.x;
 		array[1] = pt.y;
@@ -110,8 +110,8 @@ public class RobotController implements ObstacleListener {
 			int headAngle = locator.getScanner().getHeadAngle();
 			for (int i = 0; i < 6; i++) {
 				Delay.msDelay(50);
-				if (sendObstacles) {
-					obsDist = locator.getScanner().getEchoDistance();
+				obsDist = locator.getScanner().getEchoDistance();
+				if (sendObstacles && (obsDist < 255)) {
 					sendObstacle(new PolarPoint(obsDist, headAngle));
 				}
 				if ((i == 5) && (sendPose)) {
