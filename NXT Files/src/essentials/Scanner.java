@@ -137,7 +137,7 @@ public class Scanner {
 	public int getEchoDistance(float angle) {
 		//Given angle from heading to wall, get the distance to that wall
 		
-		if (Math.abs(angle - motor.getTachoCount()) > 180) {
+		while (Math.abs(angle - motor.getTachoCount()) > 180) {
 			if (angle > motor.getTachoCount()) {
 				angle -= 360;
 			} else {

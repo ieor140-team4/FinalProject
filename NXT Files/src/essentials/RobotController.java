@@ -190,8 +190,7 @@ public class RobotController implements ObstacleListener {
 			
 			break;
 		case MARCO_POLO:
-			locator.getScanner().rotateHeadTo(m.getData()[0]);
-			int echoDist = locator.getScanner().getEchoDistance();
+			int echoDist = locator.getScanner().getEchoDistance(m.getData()[0]);
 			sendObstacle(new PolarPoint(echoDist, locator.getScanner().getHeadAngle()));
 			break;
 		default:

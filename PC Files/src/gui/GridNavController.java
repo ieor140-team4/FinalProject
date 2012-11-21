@@ -2,17 +2,20 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 
 // starter for GridNavController
@@ -28,6 +31,7 @@ public class GridNavController extends JFrame implements GNC
 	private JTextField statusField;
 	private JTextField distField;
 	private JTextField angleField;
+	private MapDirectionButtonActionListener mdbal = new MapDirectionButtonActionListener();
 	/**
 	 * provides communications services: sends and recieves NXT data
 	 */
@@ -133,6 +137,7 @@ public class GridNavController extends JFrame implements GNC
 		//Create a panel with buttons on it for transmitting the info to the robot
 		JPanel buttonPanel = new JPanel();
 		topPanel.add(buttonPanel, BorderLayout.SOUTH);
+		buttonPanel.setLayout(new GridLayout(3, 4, 0, 0));
 		
 		JButton sendButton = new JButton("Go To X,Y,H");
 		sendButton.addActionListener(new MoveButtonActionListener());
@@ -161,7 +166,36 @@ public class GridNavController extends JFrame implements GNC
 		JButton setPoseButton = new JButton("Set Pose");
 		setPoseButton.addActionListener(new SetPoseButtonActionListener());
 		buttonPanel.add(setPoseButton);
+		
+		JButton mapButton = new JButton("Map");
+		mapButton.addActionListener(new MapButtonActionListener());
+		buttonPanel.add(mapButton);
+		
+		JButton marcoButton = new JButton("Marco!");
+		marcoButton.addActionListener(new MarcoButtonActionListener());
+		buttonPanel.add(marcoButton);
+		
+		//Radio buttons!
+		
+		JRadioButton rightButton = new JRadioButton("Map Right");
+		rightButton.setMnemonic(KeyEvent.VK_R);
+		rightButton.setActionCommand("right");
+		rightButton.addActionListener(mdbal);
+		
+		JRadioButton leftButton = new JRadioButton("Map Left");
+		leftButton.setMnemonic(KeyEvent.VK_L);
+		leftButton.setActionCommand("left");
+		leftButton.addActionListener(mdbal);
+		
+		ButtonGroup mapButtonsGroup = new ButtonGroup();
+		mapButtonsGroup.add(rightButton);
+		mapButtonsGroup.add(leftButton);
+		
+		distStatusPanel.add(rightButton);
+		distStatusPanel.add(leftButton);
 
+		
+		//Other stuff.
 		JPanel panel_2 = new JPanel();
 		topPanel.add(panel_2);
 
@@ -240,6 +274,31 @@ public class GridNavController extends JFrame implements GNC
 		}
 	}
 	
+	private class MapButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("Mapping button pressed.");
+			sendMap();
+		}
+	}
+	
+	private class MarcoButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("Marco!");
+			sendMarco();
+		}
+	}
+	
+	private class MapDirectionButtonActionListener implements ActionListener {
+		public boolean rightPressed = false;
+		
+		public void actionPerformed(ActionEvent event) {			
+			if (event.getActionCommand().equalsIgnoreCase("right")) {
+				rightPressed = true;
+			} else {
+				rightPressed = false;
+			}
+		}
+	}
 
 	public void sendPing() {
 		communicator.sendPing();
@@ -341,6 +400,45 @@ public class GridNavController extends JFrame implements GNC
 		}
 		
 		communicator.sendRotate(angle);
+		repaint();
+	}
+	
+	public void sendMap() {
+		float x = 0;
+		float y = 0;
+		
+		try {
+			x = Float.parseFloat(xField.getText());
+			System.out.println(" get x " + x);
+		} catch (Exception e) {
+			setMessage("Problem with X Field");
+			return;
+		}
+
+		try {
+			y = Float.parseFloat(yField.getText());
+			System.out.println(" get y " + y);
+		} catch (Exception e) {
+			setMessage("Problem  with Y field");
+			return;
+		}
+		
+		communicator.sendMap(x, y, mdbal.rightPressed);
+		repaint();
+	}
+	
+	public void sendMarco() {
+		float angle = 0;
+		
+		try {
+			angle = Float.parseFloat(angleField.getText());
+			System.out.println(" get angle " + angle);
+		} catch (Exception e) {
+			setMessage("Problem with angle field");
+			return;
+		} 
+		
+		communicator.sendMarco(angle);
 		repaint();
 	}
 

@@ -222,39 +222,6 @@ public class OffScreenGrid extends javax.swing.JPanel
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-
-		clearB = new javax.swing.JButton();
-
-		addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				formMouseClicked(evt);
-			}
-		});
-
-		clearB.setText("Clear Map");
-		clearB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				clearBActionPerformed(evt);
-			}
-		});
-
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-		this.setLayout(layout);
-		layout.setHorizontalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-						.addGap(148, 148, 148)
-						.addComponent(clearB)
-						.addContainerGap(169, Short.MAX_VALUE))
-				);
-		layout.setVerticalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-						.addGap(24, 24, 24)
-						.addComponent(clearB)
-						.addContainerGap(412, Short.MAX_VALUE))
-				);
-
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void clearBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBActionPerformed

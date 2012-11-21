@@ -139,6 +139,35 @@ public class GridControlCommunicator
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendMarco(float angle) {
+		System.out.println(" Communicator sending: MARCO");
+		try {
+			dataOut.writeInt(MessageType.MARCO_POLO.ordinal());
+			dataOut.writeFloat(angle);
+			dataOut.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendMap(float x, float y, boolean right) {
+		System.out.println(" Communicator sending: MAP");
+		try {
+			dataOut.writeInt(MessageType.MAP_TO.ordinal());
+			if (right) {
+				dataOut.writeFloat(-90.0f);
+			} else {
+				dataOut.writeFloat(90.0f);
+			}
+			dataOut.writeFloat(x);
+			dataOut.writeFloat(y);
+			dataOut.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	/**
 	 * reads the  data input stream, and calls DrawRobotPath() and DrawObstacle()
@@ -189,7 +218,7 @@ public class GridControlCommunicator
 						x = dataIn.readFloat();
 						y = dataIn.readFloat();
 						message = "  Received obstacle pos: " + x + "," + y;
-						//control.drawObstacle(x, y);
+						control.drawObstacle((int) x, (int) y);
 						break;
 						
 					case PONG:
