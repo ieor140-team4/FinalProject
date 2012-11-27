@@ -9,6 +9,7 @@ import lejos.robotics.navigation.Navigator;
 import essentials.Locator;
 import essentials.RobotController;
 import essentials.Scanner;
+import essentials.TouchDetector;
 
 public class FP_M4a_Main {
 
@@ -30,8 +31,9 @@ public class FP_M4a_Main {
 		
 		Scanner scanner = new Scanner(Motor.B, new LightSensor(SensorPort.S2), new UltrasonicSensor(SensorPort.S3));
 		Locator locator = new Locator(scanner);
+		TouchDetector detector = new TouchDetector(SensorPort.S1, SensorPort.S4);
 		
-		RobotController controller = new RobotController(navigator, locator);
+		RobotController controller = new RobotController(navigator, locator, detector);
 		controller.go();
 	}
 

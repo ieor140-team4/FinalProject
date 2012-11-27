@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import lejos.geom.Point;
 import lejos.nxt.Sound;
+import lejos.nxt.TouchSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Navigator;
 import lejos.robotics.navigation.Pose;
@@ -15,13 +16,18 @@ public class RobotController implements ObstacleListener {
 	private Communicator comm;
 	private ArrayList<Message> inbox;
 	private Locator locator;
+	private TouchDetector detector;
 
-	public RobotController(Navigator n, Locator l) {
+	public RobotController(Navigator n, Locator l, TouchDetector d) {
 		System.out.println("Connecting...");
 		comm = new Communicator();
 		comm.setController(this);
 		navigator = n;
 		locator = l;
+		
+		detector = d;
+		d.setObstacleListener(this);
+		
 		inbox = new ArrayList<Message>();
 	}
 
@@ -201,5 +207,10 @@ public class RobotController implements ObstacleListener {
 
 	public void objectFound(PolarPoint obstacleLocation) {
 		sendObstacle(obstacleLocation);		
+		navigator.stop();
+		navigator.getMoveController().stop();
+		navigator.getMoveController().travel(-5);
+		navigator.clearPath();
+		sendPose();
 	}
 }
