@@ -199,6 +199,24 @@ public class RobotController implements ObstacleListener {
 			int echoDist = locator.getScanner().getEchoDistance(m.getData()[0]);
 			sendObstacle(new PolarPoint(echoDist, locator.getScanner().getHeadAngle()));
 			break;
+		case CAPTURE:
+			int canAngle = locator.getScanner().scanForCan();
+			int rotateAngle = canAngle + 180 - (int) navigator.getPoseProvider().getPose().getHeading();
+			while (rotateAngle > 180) {
+				rotateAngle -= 360;
+			}
+			((DifferentialPilot) navigator.getMoveController()).rotate(rotateAngle);
+			sendPose();
+			
+			int backupDistance = locator.getScanner().getEchoDistance(180.0f);
+			int travelledDistance = 0;
+			while (travelledDistance < backupDistance) {
+				navigator.getMoveController().travel(-10);
+				travelledDistance += 10;
+				sendPose();
+			}
+			
+			break;
 		default:
 			break;
 		}

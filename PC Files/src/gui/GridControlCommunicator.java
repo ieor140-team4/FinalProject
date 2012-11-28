@@ -108,6 +108,16 @@ public class GridControlCommunicator
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendCapture() {
+		System.out.println(" Communicator sending: CAPTURE");
+		try {
+			dataOut.writeInt(MessageType.CAPTURE.ordinal());
+			dataOut.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void sendTravel(float dist) {
 		System.out.println(" Communicator sending: TRAVEL");

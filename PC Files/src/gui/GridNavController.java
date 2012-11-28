@@ -175,6 +175,10 @@ public class GridNavController extends JFrame implements GNC
 		marcoButton.addActionListener(new MarcoButtonActionListener());
 		buttonPanel.add(marcoButton);
 		
+		JButton captureButton = new JButton("Capture");
+		captureButton.addActionListener(new CaptureButtonActionListener());
+		buttonPanel.add(captureButton);
+		
 		//Radio buttons!
 		
 		JRadioButton rightButton = new JRadioButton("Map Right");
@@ -299,9 +303,21 @@ public class GridNavController extends JFrame implements GNC
 			}
 		}
 	}
+	
+	private class CaptureButtonActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println("Capture button pressed.");
+			sendCapture();
+		}
+	}
 
 	public void sendPing() {
 		communicator.sendPing();
+		repaint();
+	}
+	
+	public void sendCapture() {
+		communicator.sendCapture();
 		repaint();
 	}
 	

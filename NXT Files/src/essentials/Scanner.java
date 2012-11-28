@@ -39,7 +39,6 @@ public class Scanner {
 		int[] ccwBearings = {1000, 1000};
 		int[] cwBearings = {1000, 1000};
 		
-		int oldAngle = motor.getTachoCount();
 		int highestLightValue = 0;
 		int ccwIndex = 0;
 		int cwIndex = 0;
@@ -91,6 +90,63 @@ public class Scanner {
 		}
 		
 		calculateBearingsFromLightValues(ccwBearings, cwBearings);
+	}
+	
+	/**
+	 * 
+	 * @return the angle that the can is found at from the robot's current heading
+	 */
+	public int scanForCan() {
+		
+		int startAngle = -60;
+		int endAngle = 60;
+		
+		int[] ccwBearings = {1000, 1000};
+		int[] cwBearings = {1000, 1000};
+		
+		int[] startAngles = {startAngle, endAngle};
+		int[] endAngles = {endAngle, startAngle};
+		
+		int ccwIndex = 0;
+		int cwIndex = 0;
+		boolean ccw = false;
+		
+		
+		for (int i = 0; i < 2; i++) {
+			int leastDistance = 1000;
+			
+			ccw = (endAngles[i] > startAngles[i]);
+			
+			motor.rotateTo(endAngles[i], true);
+			
+			while (motor.isMoving()) {
+				int newAngle = motor.getTachoCount();
+				
+				int d = ultraSensor.getDistance();
+				
+				if (d < leastDistance) {
+					leastDistance = d;
+					if (ccw) {
+						ccwBearings[ccwIndex] = newAngle;
+						ccwIndex++;
+					} else if (!ccw) {
+						cwBearings[cwIndex] = newAngle;
+						cwIndex++;
+					}
+				} else if (d == leastDistance) {
+					if (ccw) {
+						ccwBearings[ccwIndex] = newAngle;
+					} else if (!ccw) {
+						cwBearings[cwIndex] = newAngle;
+					}
+				}
+				
+			}
+			
+		}
+		
+		
+		return (ccwBearings[0] + ccwBearings[1] + cwBearings[0] + cwBearings[1]) / 4;
 	}
 	
 	/**
