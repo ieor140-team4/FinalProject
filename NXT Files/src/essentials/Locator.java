@@ -77,7 +77,6 @@ public class Locator
 		System.out.println("X: " + _pose.getX());
 		System.out.println("Y: " + _pose.getY());
 		System.out.println("H: " + _pose.getHeading());
-		Button.waitForAnyPress();
 	}
 
 	/**

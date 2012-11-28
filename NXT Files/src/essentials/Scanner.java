@@ -101,14 +101,14 @@ public class Scanner {
 		int startAngle = -60;
 		int endAngle = 60;
 		
+		motor.rotateTo(startAngle);
+		
 		int[] ccwBearings = {1000, 1000};
 		int[] cwBearings = {1000, 1000};
 		
 		int[] startAngles = {startAngle, endAngle};
 		int[] endAngles = {endAngle, startAngle};
 		
-		int ccwIndex = 0;
-		int cwIndex = 0;
 		boolean ccw = false;
 		
 		
@@ -121,23 +121,20 @@ public class Scanner {
 			
 			while (motor.isMoving()) {
 				int newAngle = motor.getTachoCount();
-				
 				int d = ultraSensor.getDistance();
 				
 				if (d < leastDistance) {
 					leastDistance = d;
 					if (ccw) {
-						ccwBearings[ccwIndex] = newAngle;
-						ccwIndex++;
+						ccwBearings[0] = newAngle;
 					} else if (!ccw) {
-						cwBearings[cwIndex] = newAngle;
-						cwIndex++;
+						cwBearings[0] = newAngle;
 					}
 				} else if (d == leastDistance) {
 					if (ccw) {
-						ccwBearings[ccwIndex] = newAngle;
+						ccwBearings[1] = newAngle;
 					} else if (!ccw) {
-						cwBearings[cwIndex] = newAngle;
+						cwBearings[1] = newAngle;
 					}
 				}
 				

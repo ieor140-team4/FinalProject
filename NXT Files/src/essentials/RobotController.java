@@ -200,7 +200,13 @@ public class RobotController implements ObstacleListener {
 			sendObstacle(new PolarPoint(echoDist, locator.getScanner().getHeadAngle()));
 			break;
 		case CAPTURE:
-			int canAngle = locator.getScanner().scanForCan();
+			int[] canAngles = new int[5];
+			int totalAngle = 0;
+			for (int i = 0; i < canAngles.length; i++) {
+				canAngles[i] = locator.getScanner().scanForCan();
+				totalAngle += canAngles[i];
+			}
+			int canAngle = totalAngle / canAngles.length;
 			int rotateAngle = canAngle + 180 - (int) navigator.getPoseProvider().getPose().getHeading();
 			while (rotateAngle > 180) {
 				rotateAngle -= 360;
@@ -209,12 +215,9 @@ public class RobotController implements ObstacleListener {
 			sendPose();
 			
 			int backupDistance = locator.getScanner().getEchoDistance(180.0f);
-			int travelledDistance = 0;
-			while (travelledDistance < backupDistance) {
-				navigator.getMoveController().travel(-10);
-				travelledDistance += 10;
-				sendPose();
-			}
+			navigator.getMoveController().travel(-backupDistance, true);
+			
+			sendDataWhileMoving(true, false);
 			
 			break;
 		default:

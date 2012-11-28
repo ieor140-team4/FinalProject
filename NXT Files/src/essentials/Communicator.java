@@ -177,6 +177,9 @@ public class Communicator {
 						marco[0] = dis.readFloat();
 						controller.updateMessage(new Message(header, marco));
 						break;
+					case CAPTURE:
+						controller.updateMessage(new Message(header, null));
+						break;
 					default:
 						System.out.println("Unknown?");
 						break;
