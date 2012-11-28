@@ -24,10 +24,10 @@ public class RobotController implements ObstacleListener {
 		comm.setController(this);
 		navigator = n;
 		locator = l;
-		
+
 		detector = d;
 		d.setObstacleListener(this);
-		
+
 		inbox = new ArrayList<Message>();
 	}
 
@@ -193,32 +193,35 @@ public class RobotController implements ObstacleListener {
 			navigator.goTo(m.getData()[1], m.getData()[2]);
 
 			sendDataWhileMoving(true, true);
-			
+
 			break;
 		case MARCO_POLO:
 			int echoDist = locator.getScanner().getEchoDistance(m.getData()[0]);
 			sendObstacle(new PolarPoint(echoDist, locator.getScanner().getHeadAngle()));
 			break;
 		case CAPTURE:
-			int[] canAngles = new int[5];
-			int totalAngle = 0;
-			for (int i = 0; i < canAngles.length; i++) {
-				canAngles[i] = locator.getScanner().scanForCan();
-				totalAngle += canAngles[i];
-			}
-			int canAngle = totalAngle / canAngles.length;
-			int rotateAngle = canAngle + 180 - (int) navigator.getPoseProvider().getPose().getHeading();
+			PolarPoint canLocation = locator.getScanner().scanForCan(true);
+			int rotateAngle = (int) canLocation.angle + 180;
 			while (rotateAngle > 180) {
 				rotateAngle -= 360;
 			}
+			while (rotateAngle < -180) {
+				rotateAngle += 360;
+			}
 			((DifferentialPilot) navigator.getMoveController()).rotate(rotateAngle);
 			sendPose();
-			
-			int backupDistance = locator.getScanner().getEchoDistance(180.0f);
-			navigator.getMoveController().travel(-backupDistance, true);
-			
-			sendDataWhileMoving(true, false);
-			
+
+			float backupDistance = 255;
+			while (backupDistance > 80) {
+				PolarPoint backwardsCanLocation = locator.getScanner().scanForCan(false);
+				((DifferentialPilot) navigator.getMoveController()).rotate(backwardsCanLocation.angle - 180);
+				backupDistance = backwardsCanLocation.dist;
+				navigator.getMoveController().travel(-backupDistance + 15);
+				sendPose();
+			}
+			navigator.getMoveController().travel(-backupDistance);
+			sendPose();
+
 			break;
 		default:
 			break;

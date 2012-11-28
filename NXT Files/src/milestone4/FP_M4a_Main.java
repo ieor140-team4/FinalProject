@@ -24,8 +24,8 @@ public class FP_M4a_Main {
 				rightWheelDiameter, trackWidth, Motor.A, Motor.C, false);
 
 		dp.setAcceleration(1500);
-		dp.setTravelSpeed(30);
-		dp.setRotateSpeed(360);
+		dp.setTravelSpeed(20);
+		dp.setRotateSpeed(180);
 		
 		Navigator navigator = new Navigator(dp);
 		
