@@ -18,3 +18,13 @@ Milestone 4
 	PC Files/src/gui/GridNavController.java
 	PC Files/src/gui/GridControlCommunicator.java
 	PC Files/src/gui/OffScreenGrid.java
+Milestone 5
+	NXT Files/src/essentials/RobotController.java
+	NXT Files/src/essentials/MessageType.java
+	NXT Files/src/essentials/Scanner.java
+	PC Files/src/gui/GridNavController.java
+	PC Files/src/gui/GridControlCommunicator.java
+	PC Files/src/gui/OffScreenGrid.java
+	PC Files/src/essentials/MessageType.java
+Milestone 6
+	
