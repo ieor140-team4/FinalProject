@@ -1,5 +1,6 @@
 package experimentation;
 
+import essentials.Scanner;
 import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;

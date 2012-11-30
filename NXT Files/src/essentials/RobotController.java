@@ -211,15 +211,17 @@ public class RobotController implements ObstacleListener {
 			((DifferentialPilot) navigator.getMoveController()).rotate(rotateAngle);
 			sendPose();
 
-			float backupDistance = 255;
+			PolarPoint backwardsCanLocation = locator.getScanner().scanForCan(false);
+			((DifferentialPilot) navigator.getMoveController()).rotate(backwardsCanLocation.angle - 180);
+			float backupDistance = backwardsCanLocation.dist;
 			while (backupDistance > 80) {
-				PolarPoint backwardsCanLocation = locator.getScanner().scanForCan(false);
+				navigator.getMoveController().travel(-10);
+				sendPose();
+				backwardsCanLocation = locator.getScanner().scanForCan(false);
 				((DifferentialPilot) navigator.getMoveController()).rotate(backwardsCanLocation.angle - 180);
 				backupDistance = backwardsCanLocation.dist;
-				navigator.getMoveController().travel(-backupDistance + 15);
-				sendPose();
 			}
-			navigator.getMoveController().travel(-backupDistance);
+			navigator.getMoveController().travel(-backupDistance + 8); //because can is not that far
 			sendPose();
 
 			break;
