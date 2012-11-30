@@ -5,12 +5,23 @@ import lejos.nxt.SensorPortListener;
 import lejos.nxt.Sound;
 import lejos.nxt.TouchSensor;
 
+/**
+ * Detects touches made on the touch sensors located on the front of the robot.
+ * 
+ * @author nate.kb
+ *
+ */
 public class TouchDetector {
 
 	private TouchSensor lb;
 	private TouchSensor rb;
 	private ObstacleListener listener;
 	
+	/** Creates a touch detector object using touch sensors located in the given
+	 * sensor ports.
+	 * @param leftPort The sensor port corresponding to the left bumper.
+	 * @param rightPort The sensor port corresponding to the right bumper.
+	 */
 	public TouchDetector(SensorPort leftPort, SensorPort rightPort) {
 		lb = new TouchSensor(leftPort);
 		rb = new TouchSensor(rightPort);
@@ -18,10 +29,22 @@ public class TouchDetector {
 		rightPort.addSensorPortListener(new TouchDetectorListener(false));
 	}
 	
+
+	/**
+	 * Tells the touch detector who to call when there's something bad and it don't look good.
+	 * @param l The obstacle listener that will listen to the Touch Detector.
+	 */
 	public void setObstacleListener(ObstacleListener l) {
 		listener = l;
 	}
 	
+	/**
+	 * Listens to the sensor ports corresponding to the touch sensors and updates
+	 * the obstacle listener when there is a problem.
+	 * 
+	 * @author nate.kb
+	 *
+	 */
 	private class TouchDetectorListener implements SensorPortListener {
 
 		private boolean isLeft;

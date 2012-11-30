@@ -1,5 +1,12 @@
 package essentials;
 
+/**
+ * This class contains information to be communicated to the robot controller from
+ * the data that the communicator receives.
+ * 
+ * @author nate.kb
+ *
+ */
 public class Message {
 
 	private MessageType type;

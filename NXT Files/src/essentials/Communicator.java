@@ -11,6 +11,13 @@ import lejos.nxt.Sound;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 
+/**
+ * The Communicator connects to the PC through a bluetooth channel and receives
+ * and sends messages.
+ * 
+ * @author nate.kb
+ *
+ */
 public class Communicator {
 	private BTConnection btc;
 	private DataInputStream dis;

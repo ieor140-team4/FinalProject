@@ -11,6 +11,17 @@ import lejos.robotics.navigation.Navigator;
 import lejos.robotics.navigation.Pose;
 import lejos.util.Delay;
 
+/**
+ * This class is the equivalent of a Mapper or a C3PO. It controls the robot by coordinating
+ * messages that come in to the bluetooth communicator with actions that must be performed
+ * by the navigator or the locator.
+ * 
+ * It also listens to the touch detector so that it can tell the robot to back up when it
+ * hits something.
+ * 
+ * @author nate.kb
+ *
+ */
 public class RobotController implements ObstacleListener {
 	private Navigator navigator;
 	private Communicator comm;

@@ -237,6 +237,10 @@ public class Scanner {
 		motor.rotateTo((int) angle);
 	}
 
+	/**
+	 * 
+	 * @return the angle that the head is currently looking in.
+	 */
 	public int getHeadAngle() {
 		return motor.getTachoCount();
 	}
