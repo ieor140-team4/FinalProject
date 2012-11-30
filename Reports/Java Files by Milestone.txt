@@ -27,4 +27,13 @@ Milestone 5
 	PC Files/src/gui/OffScreenGrid.java
 	PC Files/src/essentials/MessageType.java
 Milestone 6
-	
+	NXT Files/src/essentials/RobotController.java
+	NXT Files/src/essentials/MessageType.java
+	NXT Files/src/essentials/Scanner.java
+	PC Files/src/essentials/MessageType.java
+	PC Files/src/gui/GridNavController.java
+	PC Files/src/gui/GridControlCommunicator.java
+
+Also along the way, we added:
+	NXT Files/src/essentials/TouchDetector.java
+to make things better so we don't crash into stuff. It's not really in any milestone, per se.
