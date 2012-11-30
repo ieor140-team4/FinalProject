@@ -68,9 +68,9 @@ public class OffScreenGrid extends javax.swing.JPanel
 		if(offScreenImage == null)makeImage();
 		int xmin = -240;
 		int xmax = 240;
-		int xSpacing = 60;
+		int xSpacing = 30;
 		int ymax = 240;
-		int ySpacing = 60;
+		int ySpacing = 30;
 		osGraphics.setColor(Color.green); // Set the line color
 		for (int y = 0; y <= ymax; y += ySpacing)
 		{
@@ -114,7 +114,7 @@ public class OffScreenGrid extends javax.swing.JPanel
 		y = ypixel(y);
 		block = true;
 		osGraphics.setColor(Color.magenta);
-		osGraphics.fillOval(x - 1, y - 1, 2, 2);//bounding rectangle is 10 x 10
+		osGraphics.fillOval(x - 3, y - 3, 6, 6);//bounding rectangle is 10 x 10
 		repaint();
 	}
 
@@ -151,10 +151,12 @@ public class OffScreenGrid extends javax.swing.JPanel
 		System.out.println("clear spot ");
 		if(osGraphics == null)System.out.println("null osGraphics");
 		osGraphics.setColor(Color.white);
-		osGraphics.fillOval(x - 6, y - 6, 12, 12);
+		osGraphics.fillOval(x - 3, y - 3, 6, 6);
 		osGraphics.setColor(c);
+		/*
 		osGraphics.drawLine(x - 5, y, x + 5, y);
 		osGraphics.drawLine(x, y - 5, x, y + 5);
+		*/
 	}
 
 
@@ -282,11 +284,11 @@ public class OffScreenGrid extends javax.swing.JPanel
 	/**
 	 * line spacing in  pixels
 	 */
-	public final int gridSpacing = 1;
+	public final int gridSpacing = 2;
 	/**
 	 * origin in pixels from corner of drawing area
 	 */
-	public final int xOrigin = 400;
+	public final int xOrigin = 600;
 	/**
 	 *robot position ; used by checkContinuity, drawRobotPath
 	 */
