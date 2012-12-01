@@ -50,7 +50,7 @@
   </class>  
   <class id="7" corner="BOTTOM_RIGHT" language="java" name="essentials.Scanner" project="NXT Files" 
     file="/NXT Files/src/essentials/Scanner.java" binary="false">    
-    <position height="-1" width="-1" x="193" y="120"/>    
+    <position height="-1" width="-1" x="197" y="166"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -66,7 +66,7 @@
   </class>  
   <class id="9" corner="BOTTOM_RIGHT" language="java" name="gui.GridControlCommunicator.Reader" project="PC Files" 
     file="/PC Files/src/gui/GridControlCommunicator.java" binary="false">    
-    <position height="-1" width="-1" x="894" y="-98"/>    
+    <position height="-1" width="-1" x="875" y="-89"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -81,31 +81,31 @@
     </display>  
   </class>  
   <association id="11">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="12" name="type"/>      
-      <multiplicity id="13" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="12" name="inbox"/>      
+      <multiplicity id="13" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="14">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="15" name="reader"/>      
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="15" name="communicator"/>      
       <multiplicity id="16" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <nesting id="17">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="9"/>  
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
   </nesting>  
   <association id="18">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="19" name="scanner"/>      
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="19" name="reader"/>      
       <multiplicity id="20" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
+    <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="21">    
@@ -117,47 +117,47 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="24">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="25" name="comm"/>      
-      <multiplicity id="26" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="27">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
-  </nesting>  
-  <association id="28">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="29" name="communicator"/>      
-      <multiplicity id="30" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="31">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="32" name="controller"/>      
-      <multiplicity id="33" minimum="0" maximum="1"/>    
+      <attribute id="25" name="controller"/>      
+      <multiplicity id="26" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="34">    
+  <nesting id="27">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </nesting>  
+  <association id="28">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="35" name="inbox"/>      
-      <multiplicity id="36" minimum="0" maximum="2147483647"/>    
+      <attribute id="29" name="comm"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="32" name="reader"/>      
+      <multiplicity id="33" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="35" name="scanner"/>      
+      <multiplicity id="36" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="37">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="38" name="reader"/>      
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="38" name="type"/>      
       <multiplicity id="39" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
