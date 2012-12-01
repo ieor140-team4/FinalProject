@@ -252,6 +252,7 @@ public class RobotController implements ObstacleListener {
 
 	public void objectFound(PolarPoint obstacleLocation) {
 		sendObstacle(obstacleLocation);		
+		sendCrashMsg();
 		navigator.stop();
 		navigator.getMoveController().stop();
 		navigator.clearPath();
