@@ -96,6 +96,14 @@ public class RobotController implements ObstacleListener {
 			System.out.println("Exception thrown");
 		}
 	}
+	
+	private void sendCrashMsg() {
+		try {
+			comm.send(new Message(MessageType.CRASH, null));
+		} catch (IOException e) {
+			System.out.println("Exception thrown.");
+		}
+	}
 
 	private void sendObstacle(PolarPoint obstacleLocation) {
 		float[] array = new float[2];
@@ -246,8 +254,8 @@ public class RobotController implements ObstacleListener {
 		sendObstacle(obstacleLocation);		
 		navigator.stop();
 		navigator.getMoveController().stop();
-		navigator.getMoveController().travel(-5);
 		navigator.clearPath();
+		navigator.getMoveController().travel(-5);
 		sendPose();
 	}
 }

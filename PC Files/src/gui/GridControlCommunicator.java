@@ -84,7 +84,7 @@ public class GridControlCommunicator
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendSetPose(float x, float y, float heading) {
 		System.out.println(" Communicator sending: SET POSE");
 		try {
@@ -108,7 +108,7 @@ public class GridControlCommunicator
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendCapture() {
 		System.out.println(" Communicator sending: CAPTURE");
 		try {
@@ -139,7 +139,7 @@ public class GridControlCommunicator
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendPing() {
 		System.out.println(" Communicator sending: PING");
 		try {
@@ -149,7 +149,7 @@ public class GridControlCommunicator
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendMarco(float angle) {
 		System.out.println(" Communicator sending: MARCO");
 		try {
@@ -160,7 +160,7 @@ public class GridControlCommunicator
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendMap(float x, float y, boolean right) {
 		System.out.println(" Communicator sending: MAP");
 		try {
@@ -176,7 +176,7 @@ public class GridControlCommunicator
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class GridControlCommunicator
 		 * position, 1 for an obstacle's position
 		 * 2) the x coordinate of that position
 		 * 3) the y coordinate of that position
-		 *    
+		 *    s
 		 */
 		public void run()
 		{
@@ -211,9 +211,14 @@ public class GridControlCommunicator
 			while (isRunning) {
 				try {
 					int index = dataIn.readInt();
-					MessageType header = MessageType.values()[index];
-					System.out.println("  Message received - " + header.toString());
-
+					MessageType header;
+					try {
+						header = MessageType.values()[index];
+						System.out.println("  Message received - " + header.toString());
+					} catch (ArrayIndexOutOfBoundsException e) {
+						System.out.println(" Header out of bounds, retrying.");
+						header = MessageType.PONG;
+					}
 					switch (header) {
 					case POS_UPDATE:
 						x = dataIn.readFloat();
@@ -229,6 +234,10 @@ public class GridControlCommunicator
 						y = dataIn.readFloat();
 						message = "  Received obstacle pos: " + x + "," + y;
 						control.drawObstacle((int) x, (int) y);
+						break;
+
+					case CRASH:
+						message = " CRASHED!!!!";
 						break;
 						
 					case PONG:

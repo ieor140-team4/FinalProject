@@ -99,12 +99,12 @@ public class Scanner {
 	public PolarPoint scanForCan(boolean isForwards) {
 
 		int leastDistance = 1000;
-		int startAngle = -60;
-		int endAngle = 60;
+		int startAngle = -30;
+		int endAngle = 30;
 		
 		if (!isForwards) {
-			startAngle = 120;
-			endAngle = 240;
+			startAngle = 140;
+			endAngle = 220;
 		}
 
 		motor.rotateTo(startAngle);
